@@ -3,7 +3,7 @@ import {mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync} from 'node:
 import os from 'node:os';
 import path from 'node:path';
 import {test} from 'node:test';
-import {assembleDocs, fetchChangelog, whatsNew} from './assemble-docs.mjs';
+import {assembleDocs, changelogUrl, fetchChangelog, whatsNew} from './assemble-docs.mjs';
 import {prepareRuntime} from './prepare-runtime.mjs';
 
 const changelog = `# Changelog
@@ -67,6 +67,7 @@ test('Assembly uses locally owned Stable and Next without overwriting either sou
   }
   writeFileSync(path.join(directory, 'docs/stable.json'), JSON.stringify({tag: 'v0.94.3'}));
   const first = await assembleDocs({directory, changelog, runtimeVersion: '0.95.1'});
+  assert.equal(first.upstream.repository, 'FScriptLang/FScript');
   assert.equal(first.runtime.version, '0.95.1');
   assert.equal(first.stable[0].tag, 'v0.94.3');
   const read = (file) => readFileSync(path.join(directory, file), 'utf8');
@@ -83,7 +84,9 @@ test('Assembly uses locally owned Stable and Next without overwriting either sou
 
 test('Upstream fetch retries transient failures and fails closed after bounded attempts', async () => {
   let requests = 0;
-  const text = await fetchChangelog({wait: async () => {}, fetchSource: async () => {
+  const text = await fetchChangelog({wait: async () => {}, fetchSource: async (url) => {
+    assert.equal(url, 'https://raw.githubusercontent.com/FScriptLang/FScript/main/CHANGELOG.md');
+    assert.equal(url, changelogUrl);
     requests++;
     return requests === 1 ? new Response('Unavailable', {status: 503}) : new Response(changelog);
   }});

@@ -22,7 +22,7 @@ Execution starts in `main.fss`, which loads the scene and starts rendering throu
 
 ### One-time provider setup
 
-Check out the [FScript repository](https://github.com/MagnusOpera/FScript) and build the provider library with the .NET 11 SDK before the first run:
+Check out the [FScript repository](https://github.com/FScriptLang/FScript) and build the provider library with the .NET 11 SDK before the first run:
 
 ```sh
 dotnet build samples/ffi/Provider/FfiSample.fsproj -c Release
@@ -71,7 +71,7 @@ The compiler reports its phases and output path. The result is one executable, `
 
 ## Find your way through the files
 
-All sample code lives under [`samples/ffi`](https://github.com/MagnusOpera/FScript/tree/main/samples/ffi).
+All sample code lives under [`samples/ffi`](https://github.com/FScriptLang/FScript/tree/main/samples/ffi).
 
 | File | Purpose |
 | --- | --- |

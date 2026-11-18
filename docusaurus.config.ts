@@ -48,7 +48,7 @@ const config: Config = {
             ...(versions.length > 0 ? {[latestReleasedVersion]: {banner: 'none', label: `Stable (${sources.stable[0].tag})`}} : {}),
           },
           editUrl: ({version, docPath}) => {
-            if (docPath === 'whats-new.md') return 'https://github.com/MagnusOpera/FScript/edit/main/CHANGELOG.md';
+            if (docPath === 'whats-new.md') return 'https://github.com/FScriptLang/FScript/edit/main/CHANGELOG.md';
             const edition = version === 'stable' ? 'stable' : 'next';
             return `https://github.com/FScriptLang/FScriptLang.github.io/edit/main/docs/${edition}/${docPath}`;
           },
@@ -103,7 +103,7 @@ const config: Config = {
           position: 'left',
         },
         {
-          href: 'https://github.com/MagnusOpera/FScript',
+          href: 'https://github.com/FScriptLang/FScript',
           label: 'GitHub ↗',
           position: 'right',
         },

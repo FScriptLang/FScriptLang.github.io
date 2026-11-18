@@ -305,7 +305,7 @@ export default function Home() {
               <Link to="/manual/learn/quickstart">Install and run</Link>
               <Link to="/manual/embedding/overview">Embed FScript</Link>
               <Link to="/manual/compiler/overview">Compile a program</Link>
-              <a href="https://github.com/MagnusOpera/FScript">GitHub <Arrow /></a>
+              <a href="https://github.com/FScriptLang/FScript">GitHub <Arrow /></a>
             </nav>
           </div>
         </section>

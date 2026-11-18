@@ -6,7 +6,7 @@ import {fileURLToPath} from 'node:url';
 import {setTimeout as delay} from 'node:timers/promises';
 
 export const root = fileURLToPath(new URL('../', import.meta.url));
-export const changelogUrl = 'https://raw.githubusercontent.com/MagnusOpera/FScript/main/CHANGELOG.md';
+export const changelogUrl = 'https://raw.githubusercontent.com/FScriptLang/FScript/main/CHANGELOG.md';
 
 export function whatsNew(changelog, tag) {
   const normalized = changelog.replaceAll('\r\n', '\n');
@@ -66,7 +66,7 @@ async function sidebar(file) {
 export async function assembleDocs({directory = root, changelog, runtimeVersion} = {}) {
   const stable = JSON.parse(readFileSync(path.join(directory, 'docs/stable.json'), 'utf8'));
   const manifest = {
-    upstream: {repository: 'MagnusOpera/FScript', ref: 'main', changelogUrl,
+    upstream: {repository: 'FScriptLang/FScript', ref: 'main', changelogUrl,
       sha256: createHash('sha256').update(changelog).digest('hex')},
     runtime: {package: '@magnusopera/fscript', version: runtimeVersion},
     next: {directory: 'docs/next'},

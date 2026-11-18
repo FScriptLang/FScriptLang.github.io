@@ -76,7 +76,7 @@ Compilation does not run this analysis automatically and has no task-sharing fla
 ## Try the runnable samples
 
 The repository includes a small provider and four scripts under
-[`samples/task-sharing`](https://github.com/MagnusOpera/FScript/tree/main/samples/task-sharing).
+[`samples/task-sharing`](https://github.com/FScriptLang/FScript/tree/main/samples/task-sharing).
 From a checkout, build the provider and run analysis:
 
 ```sh

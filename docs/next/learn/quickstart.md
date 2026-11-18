@@ -36,7 +36,7 @@ fscript version
 <summary>Building from source instead</summary>
 
 ```bash
-git clone https://github.com/MagnusOpera/FScript.git
+git clone https://github.com/FScriptLang/FScript.git
 cd FScript
 make build
 ```

@@ -224,7 +224,7 @@ Callback application requires a closed declared function type; use `HostFunction
 
 Callable handles are bound to their originating runtime and can only be used while it is active. Reusing handles from expired or foreign invocations fails, including inside containers. Callback language errors preserve their source spans. Exported functions remain callable through `invoke`; output-only callable descriptions are not a separate detached invocation API. Authentic type-token handles can round-trip through `fromJs`/`toJs`.
 
-Run the [complete JavaScript hosting sample](https://github.com/MagnusOpera/FScript/blob/main/src/FScript.JavaScript/examples/hosting.mjs) after `make fable-build` with `node src/FScript.JavaScript/examples/hosting.mjs`. It demonstrates explicit payload mutation, an immutable visible snapshot, a constructible record, and a script callback.
+Run the [complete JavaScript hosting sample](https://github.com/FScriptLang/FScript/blob/main/src/FScript.JavaScript/examples/hosting.mjs) after `make fable-build` with `node src/FScript.JavaScript/examples/hosting.mjs`. It demonstrates explicit payload mutation, an immutable visible snapshot, a constructible record, and a script callback.
 
 The facade remains synchronous. Promise-returning externs are rejected. JavaScript workers, asynchronous tasks, CLR attributes, assembly/NuGet discovery, and `fscript.toml` loading are not part of JavaScript hosting.
 

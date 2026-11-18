@@ -8,7 +8,7 @@ This repository contains the FScript website, published under Magnus Opera.
 - Keep Stable and Next content in `docs/stable/` and `docs/next/`. Preserve
   unreleased features in Next until deliberately promoting them.
 - Do not commit generated manuals, build output, or node_modules.
-- Fetch language release notes from MagnusOpera/FScript. Do not maintain a
+- Fetch language release notes from FScriptLang/FScript. Do not maintain a
   second language changelog here.
 - The playground uses the latest public `@magnusopera/fscript` npm package.
   Do not reintroduce a source checkout or a .NET/Fable build.
@@ -16,3 +16,4 @@ This repository contains the FScript website, published under Magnus Opera.
 - During migration, do not modify the FScript repository, its workflows,
   GitHub Pages settings, or DNS. GitHub and Cloudflare configuration belongs
   to the repository owner.
+- Pull-request builds must use read-only permissions, no stored credentials, no inherited secrets, and checkout with `persist-credentials: false`. Keep Pages deployment restricted to main through the `github-pages` environment.

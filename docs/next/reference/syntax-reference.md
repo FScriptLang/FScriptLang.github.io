@@ -107,7 +107,7 @@ An ordinary `{ Field = value }` literal must match exactly one declared record f
 | `{\| Field: int \|}` | Structural record-shape pattern |
 | `{ Field: int }` | Pattern resolving a declared record type by shape |
 
-Tuple patterns are also supported in nonrecursive `let` bindings: `let (left, right) = pair`. Record destructuring uses `match`; it is not a `let { ... }` form. See [Pattern Matching](../language/pattern-matching) for guards and [map matching](https://github.com/MagnusOpera/FScript/blob/main/docs/specs/map-matching-reference.md) for extraction rules.
+Tuple patterns are also supported in nonrecursive `let` bindings: `let (left, right) = pair`. Record destructuring uses `match`; it is not a `let { ... }` form. See [Pattern Matching](../language/pattern-matching) for guards and [map matching](https://github.com/FScriptLang/FScript/blob/main/docs/specs/map-matching-reference.md) for extraction rules.
 
 Annotate parameters as `(value: Type)` and function returns as `let f x : Type = ...`. Return annotations require at least one parameter. Type forms include scalars, `numeric`, named types, type variables such as `'a`, applied user-defined types such as `Box<int>`, tuples, arrows, and both record annotation forms. Built-in containers use postfix forms such as `int list`, `int option`, `int task`, `int map`, and `string map[int]`. See [Structural vs Named Annotations](../language/structural-vs-named-annotations).
 

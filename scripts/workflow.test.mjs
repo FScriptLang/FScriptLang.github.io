@@ -18,4 +18,9 @@ test('Only a successful main build can deploy, using the built-in Pages token', 
   assert.ok(build >= 0 && testRuntime > build, 'Tests must exercise the refreshed runtime before deployment');
   assert.ok(steps.some((step) => step.run === 'npm run typecheck'));
   assert.doesNotMatch(JSON.stringify(workflow), /secrets\.|setup-dotnet|MagnusOpera\/FScript/);
+  assert.deepEqual(workflow.permissions, {contents: 'read'});
+  assert.equal(workflow.jobs.build.environment, undefined);
+  assert.equal(workflow.jobs.build.permissions, undefined);
+  assert.equal(workflow.jobs.build.steps[0].with['persist-credentials'], false);
+  assert.equal(workflow.jobs.deploy.environment.name, 'github-pages');
 });

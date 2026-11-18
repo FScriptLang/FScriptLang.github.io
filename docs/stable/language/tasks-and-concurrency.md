@@ -85,7 +85,7 @@ let result = (Task.await a, Task.await b)
 Console.writeLine $"{result}"
 ```
 
-For a larger example, see [`samples/parallel-quicksort.fss`](https://github.com/MagnusOpera/FScript/blob/main/samples/parallel-quicksort.fss).
+For a larger example, see [`samples/parallel-quicksort.fss`](https://github.com/FScriptLang/FScript/blob/main/samples/parallel-quicksort.fss).
 
 Continue with [Guided Examples](../examples/guided-examples) to combine these features, or consult the [Stdlib Overview](../stdlib/overview) for available operations.
 

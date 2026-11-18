@@ -169,7 +169,7 @@ Self-contained single-file output still includes a managed runtime. Native AOT p
 
 Ordinary CLI execution and `ScriptHost` still use the AST interpreter; JavaScript embedding remains interpreted. Native specialization, call lowering, and assembly pruning are not enabled on those paths. The separate LIR interpreter executes validated IR and has its own tail-call trampoline; it does not run the .NET assembly backend's passes.
 
-For API contracts, representations, and validation details, see the [.NET backend specification](https://github.com/MagnusOpera/FScript/blob/main/docs/specs/dotnet-backends.md).
+For API contracts, representations, and validation details, see the [.NET backend specification](https://github.com/FScriptLang/FScript/blob/main/docs/specs/dotnet-backends.md).
 
 ## Discarding the entry value
 
@@ -185,7 +185,7 @@ The .NET backend repeats this cleanup after known-call reduction and reachabilit
 
 ## Comparing generated IL with F#
 
-A [reproducible compiler comparison](https://github.com/MagnusOpera/FScript/tree/main/benchmarks/FScript.DotNet.Comparison) checks equivalent FScript and F# programs covering tail loops, record pipelines, payload unions, and recursive quicksort. In a source checkout, run `make benchmark-dotnet-comparison` to validate results, measure warmed execution and allocations, and inspect both assemblies' IL. F# list and array baselines help distinguish compiler optimizations from collection representation costs.
+A [reproducible compiler comparison](https://github.com/FScriptLang/FScript/tree/main/benchmarks/FScript.DotNet.Comparison) checks equivalent FScript and F# programs covering tail loops, record pipelines, payload unions, and recursive quicksort. In a source checkout, run `make benchmark-dotnet-comparison` to validate results, measure warmed execution and allocations, and inspect both assemblies' IL. F# list and array baselines help distinguish compiler optimizations from collection representation costs.
 
 The measurements exclude interpretation, startup, and compilation. IL summaries describe static code before the .NET JIT performs its own optimizations; they are not machine-code performance guarantees. The accompanying correctness and IL checks run in the test suite without timing thresholds.
 

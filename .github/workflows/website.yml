@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
   schedule:
     # Pick up new npm packages and upstream changelog entries without modifying
-    # MagnusOpera/FScript or requiring a cross-repository dispatch credential.
+    # FScriptLang/FScript or requiring a cross-repository dispatch credential.
     - cron: '23 */6 * * *'
 
 permissions:

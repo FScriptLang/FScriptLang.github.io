@@ -42,6 +42,7 @@ const attributes = (html, name) => [...html.matchAll(new RegExp(`\\b${name}=(?:"
 const canonical = homepage.match(/<link\b[^>]*\brel=(?:"canonical"|'canonical'|canonical)(?=[\s>])[^>]*>/)?.[0] ?? '';
 assert.deepEqual(attributes(canonical, 'href'), [`${siteUrl}${baseUrl}`], 'Homepage canonical URL must match the deployment URL');
 const imageAndScriptSources = attributes(homepage, 'src');
+assert.ok(attributes(homepage, 'href').includes('https://github.com/FScriptLang/FScript'), 'The language repository link must use its new organization');
 assert.ok(imageAndScriptSources.some((src) => src.startsWith(`${baseUrl}assets/`)), 'JavaScript assets must use the deployment base path');
 assert.ok(imageAndScriptSources.includes(`${baseUrl}img/magnus-opera-logo.svg`), 'Footer logo must use the deployment base path');
 if (baseUrl === '/') {

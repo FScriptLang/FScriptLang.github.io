@@ -45,7 +45,7 @@ the locked runtime without refreshing npm. Production builds always refresh it.
   `sidebars.next.ts`.
 - `docs/stable.json` records the stable documentation tag as `vX.Y.Z`.
 - `whats-new.md` is generated from
-  [FScript's CHANGELOG](https://github.com/MagnusOpera/FScript/blob/main/CHANGELOG.md).
+  [FScript's CHANGELOG](https://github.com/FScriptLang/FScript/blob/main/CHANGELOG.md).
   Edit the upstream changelog for language release notes, rather than editing
   the copied placeholders.
 
@@ -74,6 +74,10 @@ this repository immediately while upstream workflows remain unchanged.
 In GitHub, enable Pages with **GitHub Actions** as the publishing source. Allow
 the `github-pages` environment to deploy main. Deployment uses the built-in
 token with `pages: write` and `id-token: write`; there are no custom secrets.
+Keep the environment's GitHub deployment rules restricted to `main`, and do not
+grant repository or organization secrets to this repository. PR builds have
+read-only permissions and cannot enter the deployment environment, including
+when a PR changes workflow YAML.
 
 The initial deployment uses `https://fscriptlang.github.io/`. It does
 not claim the production custom domain. For the eventual domain handover:
