@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 
+- Simplify the README to focus on the website, local development, and documentation contributions.
 - Document and verify that pull-request builds have read-only permissions and no publishing credentials.
 - Fetch FScript release notes and link documentation to the transferred FScriptLang repository.
 - Publish the website at the organization root and point documentation edit links to the renamed repository.
