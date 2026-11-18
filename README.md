@@ -15,7 +15,7 @@ npm start
 
 After `npm ci`, `make website` is equivalent to `npm start`.
 
-The development site is at `http://localhost:3000/website/`. Both manuals are
+The development site is at `http://localhost:3000/`. Both manuals are
 available locally. Documentation and sidebar edits refresh the generated
 manuals. Restart the server to refresh the upstream changelog or npm interpreter.
 
@@ -75,7 +75,7 @@ In GitHub, enable Pages with **GitHub Actions** as the publishing source. Allow
 the `github-pages` environment to deploy main. Deployment uses the built-in
 token with `pages: write` and `id-token: write`; there are no custom secrets.
 
-The initial deployment uses `https://fscriptlang.github.io/website/`. It does
+The initial deployment uses `https://fscriptlang.github.io/`. It does
 not claim the production custom domain. For the eventual domain handover:
 
 1. Configure these repository Actions variables:

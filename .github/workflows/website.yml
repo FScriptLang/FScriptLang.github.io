@@ -32,7 +32,7 @@ jobs:
       - name: Build Stable, Next, and the npm playground
         env:
           WEBSITE_URL: ${{ vars.WEBSITE_URL || 'https://fscriptlang.github.io' }}
-          WEBSITE_BASE_URL: ${{ vars.WEBSITE_BASE_URL || '/website/' }}
+          WEBSITE_BASE_URL: ${{ vars.WEBSITE_BASE_URL || '/' }}
         run: npm run build
       - run: npm test
       - run: npm run typecheck

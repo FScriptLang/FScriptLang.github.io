@@ -16,10 +16,10 @@ const config: Config = {
   },
 
   url: process.env.WEBSITE_URL ?? 'https://fscriptlang.github.io',
-  baseUrl: process.env.WEBSITE_BASE_URL ?? '/website/',
+  baseUrl: process.env.WEBSITE_BASE_URL ?? '/',
 
   organizationName: 'FScriptLang',
-  projectName: 'website',
+  projectName: 'FScriptLang.github.io',
 
   onBrokenLinks: 'throw',
   staticDirectories: ['static', '.generated/static'],
@@ -50,7 +50,7 @@ const config: Config = {
           editUrl: ({version, docPath}) => {
             if (docPath === 'whats-new.md') return 'https://github.com/MagnusOpera/FScript/edit/main/CHANGELOG.md';
             const edition = version === 'stable' ? 'stable' : 'next';
-            return `https://github.com/FScriptLang/website/edit/main/docs/${edition}/${docPath}`;
+            return `https://github.com/FScriptLang/FScriptLang.github.io/edit/main/docs/${edition}/${docPath}`;
           },
         },
         blog: false,
@@ -111,7 +111,7 @@ const config: Config = {
     },
     footer: {
       style: 'dark',
-      copyright: `<span class="footer-brand">© ${new Date().getFullYear()} <a href="https://magnusopera.io"><img src="${process.env.WEBSITE_BASE_URL ?? '/website/'}img/magnus-opera-logo.svg" alt="" /> Magnus Opera SAS</a></span>`,
+      copyright: `<span class="footer-brand">© ${new Date().getFullYear()} <a href="https://magnusopera.io"><img src="${process.env.WEBSITE_BASE_URL ?? '/'}img/magnus-opera-logo.svg" alt="" /> Magnus Opera SAS</a></span>`,
     },
     prism: {
       theme: prismThemes.github,

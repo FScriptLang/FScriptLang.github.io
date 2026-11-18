@@ -29,6 +29,6 @@ repository stays untouched. Manual runs allow an immediate refresh. Content
 pushes deploy without requiring a language release. Tests exercise the npm
 runtime after preparation, before the deployment job can run.
 
-The initial URL is `https://fscriptlang.github.io/website/`. Repository
+The initial URL is `https://fscriptlang.github.io/`. Repository
 variables select the URL and base path at build time for a later custom-domain
 handover. GitHub Pages settings and Cloudflare DNS remain owner-managed.

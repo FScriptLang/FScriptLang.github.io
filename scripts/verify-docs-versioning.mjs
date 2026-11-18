@@ -33,4 +33,23 @@ for (const [index, release] of sources.stable.entries()) {
   assert.deepEqual([...html.matchAll(/<h3 [^>]*>(v[\d.]+)</g)].map((match) => match[1]), patches);
 }
 assert.deepEqual(JSON.parse(readFileSync(path.join(root, 'build/website-sources.json'), 'utf8')), sources);
+const baseUrl = process.env.WEBSITE_BASE_URL ?? '/';
+const siteUrl = process.env.WEBSITE_URL ?? 'https://fscriptlang.github.io';
+const homepage = readFileSync(path.join(root, 'build/index.html'), 'utf8');
+// The production minifier may remove optional quotes around HTML attributes.
+const attributes = (html, name) => [...html.matchAll(new RegExp(`\\b${name}=(?:"([^"]*)"|'([^']*)'|([^\\s>]+))`, 'g'))]
+  .map((match) => match[1] ?? match[2] ?? match[3]);
+const canonical = homepage.match(/<link\b[^>]*\brel=(?:"canonical"|'canonical'|canonical)(?=[\s>])[^>]*>/)?.[0] ?? '';
+assert.deepEqual(attributes(canonical, 'href'), [`${siteUrl}${baseUrl}`], 'Homepage canonical URL must match the deployment URL');
+const imageAndScriptSources = attributes(homepage, 'src');
+assert.ok(imageAndScriptSources.some((src) => src.startsWith(`${baseUrl}assets/`)), 'JavaScript assets must use the deployment base path');
+assert.ok(imageAndScriptSources.includes(`${baseUrl}img/magnus-opera-logo.svg`), 'Footer logo must use the deployment base path');
+if (baseUrl === '/') {
+  assert.ok(![...attributes(homepage, 'href'), ...imageAndScriptSources].some((url) => url.startsWith('/website/')),
+    'The old project path must not remain in root deployment links');
+}
+for (const [edition, file] of [['stable', path.join(manual, 'index.html')], ['next', path.join(manual, next, 'index.html')]]) {
+  assert.ok(readFileSync(file, 'utf8').includes(`https://github.com/FScriptLang/FScriptLang.github.io/edit/main/docs/${edition}/intro.md`),
+    `${edition} documentation edit links must target the renamed repository`);
+}
 console.log(`Verified Next and ${versions.length} stable manuals against their recorded sources.`);
