@@ -1,0 +1,53 @@
+{
+  "name": "@fscriptlang/website",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "prepare:docs": "node scripts/assemble-docs.mjs",
+    "prepare:runtime": "node scripts/prepare-runtime.mjs",
+    "prepare:website": "npm run prepare:runtime && npm run prepare:docs",
+    "prestart": "npm run prepare:website",
+    "start": "node scripts/start.mjs",
+    "prebuild": "npm run prepare:website",
+    "build": "docusaurus build",
+    "postbuild": "node scripts/verify-docs-versioning.mjs",
+    "serve": "docusaurus serve",
+    "clear": "docusaurus clear",
+    "pretypecheck": "npm run prepare:docs",
+    "typecheck": "tsc",
+    "test": "node --test scripts/*.test.mjs"
+  },
+  "dependencies": {
+    "@docusaurus/core": "3.10.2",
+    "@docusaurus/faster": "3.10.2",
+    "@docusaurus/preset-classic": "3.10.2",
+    "@mdx-js/react": "^3.1.1",
+    "clsx": "^2.1.1",
+    "prism-react-renderer": "^2.4.1",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "@magnusopera/fscript": "latest"
+  },
+  "devDependencies": {
+    "@docusaurus/module-type-aliases": "3.10.2",
+    "@docusaurus/tsconfig": "3.10.2",
+    "@docusaurus/types": "3.10.2",
+    "js-yaml": "4.3.2",
+    "typescript": "~5.9.3"
+  },
+  "browserslist": {
+    "production": [
+      ">0.5%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 3 chrome version",
+      "last 3 firefox version",
+      "last 5 safari version"
+    ]
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}

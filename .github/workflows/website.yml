@@ -1,0 +1,58 @@
+name: Website
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    # Pick up new npm packages and upstream changelog entries without modifying
+    # MagnusOpera/FScript or requiring a cross-repository dispatch credential.
+    - cron: '23 */6 * * *'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: website-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - name: Build Stable, Next, and the npm playground
+        env:
+          WEBSITE_URL: ${{ vars.WEBSITE_URL || 'https://fscriptlang.github.io' }}
+          WEBSITE_BASE_URL: ${{ vars.WEBSITE_BASE_URL || '/website/' }}
+        run: npm run build
+      - run: npm test
+      - run: npm run typecheck
+      - name: Verify tracked sources remain unchanged
+        run: git diff --exit-code
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: build
+
+  deploy:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/configure-pages@v5
+      - uses: actions/deploy-pages@v4
+        id: deployment

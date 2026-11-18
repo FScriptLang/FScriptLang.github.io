@@ -1,0 +1,8 @@
+# Website changelog
+
+## [Unreleased]
+
+- Copy Stable and Next documentation into an independently deployable website while preserving unreleased language documentation.
+- Run the playground with the latest public FScript npm package and display its version.
+- Generate release history and Unreleased notes from the upstream FScript changelog without requiring a PAT.
+- Build and deploy GitHub Pages independently, with production domain configuration deferred to the repository owner.
