@@ -13,7 +13,7 @@ Start with lists, options, and maps for data transformations. Add runtime module
 | Surface | Modules or names | Available when |
 | --- | --- | --- |
 | Core functions and values | `List`, `Option`, `Map`, `String`, `Int`, `Float`, `Bool`, `Path`, `Glob`, `SemVer`, `ignore` | Always, including JavaScript hosts |
-| Default .NET runtime externs | `Console`, `Task`, `Mailbox`, `Fs`, `Json`, `Regex`, `Xml`, `Hash`, `Encoding`, `Guid` | The host registers them; the CLI enables them by default |
+| Default .NET runtime externs | `Console`, `Task`, `Mailbox`, `Ref`, `Fs`, `Json`, `Regex`, `Xml`, `Hash`, `Encoding`, `Guid` | The host registers them; the CLI enables them by default |
 | Exit status | `Env.setExitCode : int -> unit` | Effectful core operation; never terminates the host |
 | Execution metadata | `Env : Environment` | Injected by the CLI/REPL or supplied by an embedding host |
 
@@ -33,6 +33,7 @@ No imports are needed for registered functions. An embedding host may expose a s
 | Read or write console text | [Console](./console) |
 | Run concurrent work and await results | [Task](./task) |
 | Process messages from concurrent producers | [Mailbox](./mailbox) |
+| Store and replace a value | [Ref](./ref) |
 | Read, write, and discover files | [Fs](./fs) |
 | Decode and encode JSON | [Json](./json) |
 | Extract regular-expression capture groups | [Regex](./regex) |

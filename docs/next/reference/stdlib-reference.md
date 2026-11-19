@@ -105,6 +105,14 @@ This is the complete catalog of core functions/values and default .NET runtime e
 
 ## Default .NET runtime
 
+### Ref
+
+| Name | Signature | Host permissions |
+| --- | --- | --- |
+| [`Ref.create`](../stdlib/ref) | `'t -> Ref<'t>` | <a className="permission-tag permission-tag--none" href="../embedding/host-permissions#none" title="None permission definition">None</a> |
+| [`Ref.get`](../stdlib/ref) | `Ref<'t> -> 't` | <a className="permission-tag permission-tag--none" href="../embedding/host-permissions#none" title="None permission definition">None</a> |
+| [`Ref.set`](../stdlib/ref) | `'t -> Ref<'t> -> unit` | <a className="permission-tag permission-tag--none" href="../embedding/host-permissions#none" title="None permission definition">None</a> |
+
 ### Console
 
 | Name | Signature | Host permissions |

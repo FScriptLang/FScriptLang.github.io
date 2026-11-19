@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 
+- Document Ref mutable storage in the Next manual, signature index, and navigation.
 - Simplify the README to focus on the website, local development, and documentation contributions.
 - Document and verify that pull-request builds have read-only permissions and no publishing credentials.
 - Fetch FScript release notes and link documentation to the transferred FScriptLang repository.
