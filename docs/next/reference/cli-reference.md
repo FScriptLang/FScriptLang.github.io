@@ -192,3 +192,37 @@ compilation; existing execution and compilation commands skip it.
 
 See [Checking FFI Task Sharing](../learn/task-sharing-analysis.md) for the rationale,
 examples, provider thread-safety contracts, hosting APIs, and limitations.
+
+## Interpreter permission selection
+
+Interpreted file execution, stdin, REPL, debugging, and static analysis default
+to no permissions. Select an exact set on the command line:
+
+```sh
+fscript --permissions IO,Threading script.fss
+fscript --permissions All script.fss
+fscript analyze --permissions IO,Threading script.fss
+```
+
+Or declare the permissions in the selected manifest:
+
+```toml
+[runtime]
+permissions = ["IO", "Threading"]
+```
+
+Explicit CLI permissions replace the manifest list; otherwise the manifest list
+applies, falling back to `None`. `--no-config` ignores the manifest. Names are
+case-insensitive: `Interactive`, `Threading`, `IO`, `Native`, `All`, and `None`.
+`All` and `None` must stand alone. TOML `[]` explicitly grants nothing. Unknown
+names, wrong value types, and empty comma-separated CLI entries are errors,
+validated before package restoration or provider initialization.
+
+An automatically discovered manifest is trusted CLI configuration. A manifest
+containing `Native` can authorize arbitrary provider code and child programs;
+review configuration alongside scripts before running an unfamiliar repository.
+Provider loading requires Native even when selected with `--extern-assembly`.
+
+Compilation ignores `runtime.permissions` and remains unrestricted. The
+`--permissions` option applies to interpreted execution and `analyze` only.
+Use `--permissions All` to retain previous CLI execution behavior.

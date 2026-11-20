@@ -6,7 +6,7 @@ slug: /reference/stdlib
 
 This is the complete catalog of core functions/values and default .NET runtime externs. Each name links to argument order, examples, and failure behavior. Type variables are local to each signature; repeated variables in a row must agree.
 
-**Core** functions are always available. **Runtime** functions require host registration, are enabled by default in the CLI, and are disabled by `--no-default-externs` or `runtime.default-externs = false`. JavaScript hosts provide their own externs. Registered custom providers add functions beyond this standard catalog. Click a permission tag to read its definition. **None** means that the function requires no capabilities. The **Host permissions** column applies only to hosted interpretation: hosts grant none by default. The CLI and compilation are unrestricted by this policy. Provider FFI requires `Native`; callbacks retain their own requirements. See [Host permissions](../embedding/host-permissions).
+**Core** functions are always available. **Runtime** functions require host registration, are enabled by default in the CLI, and are disabled by `--no-default-externs` or `runtime.default-externs = false`. JavaScript hosts provide their own externs. Registered custom providers add functions beyond this standard catalog. Click a permission tag to read its definition. **None** means that the function requires no capabilities. The **Host permissions** column applies to hosted and interpreted CLI execution, both defaulting to none. CLI flags or the selected manifest can grant permissions. Compilation remains unrestricted. Provider FFI requires `Native`; callbacks retain their own requirements. See [Host permissions](../embedding/host-permissions).
 
 ## Top-level surface
 

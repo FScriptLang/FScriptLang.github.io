@@ -175,4 +175,51 @@ They use assembly identity `3.0.0.0`; SDK 2 providers must rebuild. See
 Runtime includes Process in its default externs without a package or assembly
 import. Disabling default externs removes it. Process.exec requires Native;
 defaults and data types need no grants. Script task operations retain their
-separate Threading checks. Neither a manifest nor a provider grants permissions.
+separate Threading checks. CLI configuration can select permissions; embedding configuration cannot exceed explicit host grants.
+
+## Interpreter permission selection
+
+Interpreted file execution, stdin, REPL, debugging, and static analysis default
+to no permissions. Select an exact set on the command line:
+
+```sh
+fscript --permissions IO,Threading script.fss
+fscript --permissions All script.fss
+fscript analyze --permissions IO,Threading script.fss
+```
+
+Or declare the permissions in the selected manifest:
+
+```toml
+[runtime]
+permissions = ["IO", "Threading"]
+```
+
+Explicit CLI permissions replace the manifest list; otherwise the manifest list
+applies, falling back to `None`. `--no-config` ignores the manifest. Names are
+case-insensitive: `Interactive`, `Threading`, `IO`, `Native`, `All`, and `None`.
+`All` and `None` must stand alone. TOML `[]` explicitly grants nothing. Unknown
+names, wrong value types, and empty comma-separated CLI entries are errors,
+validated before package restoration or provider initialization.
+
+An automatically discovered manifest is trusted CLI configuration. A manifest
+containing `Native` can authorize arbitrary provider code and child programs;
+review configuration alongside scripts before running an unfamiliar repository.
+Provider loading requires Native even when selected with `--extern-assembly`.
+
+For embedding hosts, `EnvironmentLoader.loadWithPermissions` and
+`loadWithInfoAndPermissions` intersect manifest permissions with explicit host
+grants. Omitted manifest permissions preserve those grants; default loader APIs
+still grant nothing. A manifest cannot elevate a host's permission ceiling.
+Direct registrations continue using their explicit host context.
+
+Editor diagnostics use the selected script policy. Workspace trust is an
+additional prerequisite for loading providers. Invalid or failed environments
+do not restore an unrestricted catalog. Debugger launches use selected manifest
+grants, defaulting to None; embedded launches retain their explicit host ceiling.
+
+Compilation ignores valid `runtime.permissions`: its catalog, provider loading,
+and generated code remain unrestricted. `--permissions` is an execution/analysis
+option and is rejected by `compile`. Malformed configuration remains an error.
+For migration, `--permissions All` retains previous CLI execution behavior;
+prefer declaring the permissions a script actually needs.

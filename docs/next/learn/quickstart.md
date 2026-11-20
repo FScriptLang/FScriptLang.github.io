@@ -71,8 +71,11 @@ Console.writeLine $"12 Scale seats: ${total}/month"
 Run it:
 
 ```bash
-fscript pricing.fss
+fscript --permissions IO pricing.fss
 ```
+
+`IO` permits console output. Interpreted execution otherwise starts with no
+permissions; a `[runtime]` manifest can also declare `permissions = ["IO"]`.
 
 The script writes the following line (the CLI also prints the final expression result, `()`):
 
@@ -124,7 +127,7 @@ fscript
 Pass script arguments after `--`:
 
 ```bash
-fscript pricing.fss -- acme scale
+fscript --permissions IO pricing.fss -- acme scale
 ```
 
 The script receives them as the `string list` value `Env.Arguments`.
