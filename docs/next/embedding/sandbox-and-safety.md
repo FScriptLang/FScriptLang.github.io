@@ -13,7 +13,7 @@ Scripts can only perform actions that your host exposes and permits. See [Host P
 - Do not expose risky externs by default.
 - Restrict filesystem scope with root/deny policies.
 - Treat symlinks and reparse points as sandbox boundary risks; built-in `Fs.*` externs reject those paths.
-- Enforce CPU, memory, and execution-time limits in the host; use process isolation when termination must be guaranteed. The interpreter does not provide a general script cancellation API.
+- Use host cancellation/time limits for cooperative execution and propagate cancellation into async I/O. Enforce memory limits and use process isolation when termination must be guaranteed.
 - Treat script execution as untrusted input handling.
 
 ## Recommended defaults
@@ -28,4 +28,4 @@ Loading a configured provider in an embedding host requires `Native`. A configur
 
 [Host-managed values](./host-managed-types) prevent scripts from constructing or updating opaque host resources and expose only registered visible fields. They preserve private payloads through calls and containers, but do not supply a disposal protocol or resource isolation. The host owns lifetime, synchronization, cloning, and the capabilities available through registered functions.
 
-`Process.exec` requires `Native | Threading` and runs child programs with host OS access. Filesystem root and deny rules do not contain these children; use OS isolation if containment is needed.
+`Process.exec` is supplied by Runtime default externs, requires `Native`, and exposes asynchronous I/O. Script `Task.await` separately requires `Threading`. Child programs run with host OS access. Filesystem root and deny rules do not contain these children; use OS isolation if containment is needed.

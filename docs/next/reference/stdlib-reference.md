@@ -358,11 +358,15 @@ Path, Glob, SemVer, scalar, and collection additions are core builtins. Encoding
 
 ### Process
 
+Runtime supplies Process through default externs, without a package import.
+Execution requires Native; defaults and data types require no grants.
+Script task operations separately require Threading.
+
 | Name | Type | Availability | Host permissions |
 | --- | --- | --- | --- |
-| [`Process.defaults`](../stdlib/process) | `ProcessOptions` | Runtime value | <a className="permission-tag permission-tag--none" href="../embedding/host-permissions#none">None</a> |
-| [`Process.exec`](../stdlib/process) | `string -> string list -> ProcessOptions -> ProcessResult task` | Runtime function | <a className="permission-tag permission-tag--native" href="../embedding/host-permissions#native">Native</a>, <a className="permission-tag permission-tag--threading" href="../embedding/host-permissions#threading">Threading</a> |
-| [`ProcessOptions`](../stdlib/process) | Process configuration record | Runtime type | None |
+| [`Process.defaults`](../stdlib/process) | `ProcessOptions` | Runtime value | None |
+| [`Process.exec`](../stdlib/process) | `string -> string list -> ProcessOptions -> ProcessResult task` | Runtime function | <a className="permission-tag permission-tag--native" href="../embedding/host-permissions#native">Native</a> |
+| [`ProcessOptions`](../stdlib/process) | Process configuration record | Runtime data type | None |
 | [`ProcessResult`](../stdlib/process) | `Exited of { exitCode: int; stdout: string; stderr: string }` / `Failed of { message: string; stdout: string; stderr: string }` | Runtime union | None |
 
 ### FScript

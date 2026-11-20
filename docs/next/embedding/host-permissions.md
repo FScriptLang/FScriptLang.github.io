@@ -12,9 +12,9 @@ Hosted interpreter execution starts with **no permissions**. The host selects a 
 | <span id="io" className="permission-definition"><code>IO</code></span> | Built-in filesystem operations, console output, and host entropy through `Guid.new`. |
 | <span id="interactive" className="permission-definition"><code>Interactive</code></span> | Terminal input; `Console.readLine` additionally requires `IO`. |
 | <span id="threading" className="permission-definition"><code>Threading</code></span> | Every `Task.*` and `Mailbox.*` operation, plus `FScript.exec`. |
-| <span id="native" className="permission-definition"><code>Native</code></span> | External provider loading, calls to SDK/FFI functions, and launching child programs through `Process.exec` (also requires `Threading`). This grants trust in code with host OS access. |
+| <span id="native" className="permission-definition"><code>Native</code></span> | External provider loading, calls to SDK/FFI functions, and launching child programs through the built-in `Process.exec` function. This grants trust in code with host OS access. |
 
-`Native` is a trust boundary: arbitrary provider code and child programs can access the host directly, so they are not confined by the interpreter's filesystem, IO, or threading checks. Tasks started directly by provider code remain the provider/host's responsibility; the runtime joins tasks started through its own Task API. Built-in implementation details such as `Math` calling the BCL do not require `Native`.
+`Native` is a trust boundary: arbitrary provider code and child programs can access the host directly, so they are not confined by the interpreter's filesystem, IO, or threading checks. SDK 3 `ExposeAsync` registers library I/O without worker scheduling; the host tracks it and joins pending operations at scope exit. Native code that starts detached work outside that API remains the provider/host's responsibility. Built-in implementation details such as `Math` calling the BCL do not require `Native`.
 
 ## Configure the runtime host
 
@@ -45,7 +45,7 @@ SDK `ExternalFunction` record layouts are unchanged. `ExtensionBridge.toLanguage
 
 ## Enforcement and lifetimes
 
-Denied externs are removed before `ScriptHost` type inference. Calls are checked again at execution, including returned callables, callback application, SDK default forwarding, and canonical task operations. Checking the SDK task context additionally requires `Threading`, even when the provider itself has `Native`.
+Denied externs are removed before `ScriptHost` type inference. Calls are checked again at execution, including returned callables, callback application, SDK default forwarding, and canonical task operations. SDK 3 async I/O exposure requires no additional `Threading` grant. Script `Task.*` operations still require it, including awaiting. The SDK context has no spawning or awaiting methods; see [Create Async Libraries](./async-libraries).
 
 `LoadedScript` retains its policy for every exported-function invocation. Direct Language hosts use `Eval.invokeValueWithPermissionsAndExitCode permissions typeDefs functionValue arguments`; the shorter `invokeValueWithExitCode` defaults to none. REPL state retains the policy across submissions. `DebugLaunch.create` also defaults to none; embedding launchers can use `createWithPermissions`, while the CLI/editor debugger explicitly grants all capabilities. Tasks share the same immutable grants, are joined before the invocation returns, and contribute fatal failures to the final error report.
 
@@ -53,6 +53,6 @@ Permissions govern script operations. Host-controlled source loading and import 
 
 ## Migration
 
-The Language/Runtime host API now requires permission declarations on native function descriptors, a policy on native registrations and runtime contexts, and `CheckPermissions` on custom native call contexts. Existing extern-list loading APIs remain default-deny. Use `ScriptHost.loadSourceWithPermissions` or `loadFileWithPermissions` for explicit grants, or switch to registration-based loading for includes and custom types. The independently versioned Extensibility SDK requires no ABI change. New permissions are never granted by a manifest or a provider.
+The Language/Runtime host API now requires permission declarations on native function descriptors, a policy on native registrations and runtime contexts, and `CheckPermissions` on custom native call contexts. Existing extern-list loading APIs remain default-deny. Use `ScriptHost.loadSourceWithPermissions` or `loadFileWithPermissions` for explicit grants, or switch to registration-based loading for includes and custom types. SDK 3 separately changes the invocation-context ABI: hosts and providers must rebuild for `Apply`, `ExposeAsync`, and `CheckRuntime`; [migration guidance](./async-libraries#migration-from-sdk-2) explains the removed APIs. New permissions are never granted by a manifest or a provider.
 
 `FScript.exec` loads child source and imports without IO inside the inherited/narrowed root. Child grants are selected from the active invocation, and requests for additional capabilities fail. Children rebuild standard functions for their sandbox and inherit no custom providers; see the [FScript module](../stdlib/fscript).

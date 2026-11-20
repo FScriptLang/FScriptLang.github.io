@@ -74,6 +74,7 @@ const sidebars: SidebarsConfig = {
         'embedding/real-world-embedding',
         'embedding/fable-javascript',
         'embedding/register-externs',
+        'embedding/async-libraries',
         'embedding/host-managed-types',
         'embedding/resolver-and-includes',
         'embedding/sandbox-and-safety',

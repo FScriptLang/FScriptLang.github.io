@@ -21,6 +21,10 @@ A task has the native postfix type `'a task`. Lists are homogeneous: every candi
 | `Task.await` | `'a task -> 'a` | <a className="permission-tag permission-tag--threading" href="../embedding/host-permissions#threading" title="Threading permission definition">Threading</a> |
 | `Task.awaitAll` | `'a task list -> 'a list` | <a className="permission-tag permission-tag--threading" href="../embedding/host-permissions#threading" title="Threading permission definition">Threading</a> |
 
+SDK 3 libraries can return tasks for asynchronous I/O without spawning workers.
+Scripts await and compose those values using the functions below; library I/O
+exposure itself does not require Threading. See [Create Async Libraries](../embedding/async-libraries).
+
 ## `Task.spawn`
 
 <a className="permission-tag permission-tag--threading" href="../embedding/host-permissions#threading" title="Threading permission definition">Threading</a>

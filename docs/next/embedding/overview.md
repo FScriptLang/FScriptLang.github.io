@@ -10,7 +10,7 @@ FScript is designed for host applications that embed a scripting language safely
 
 1. Reference Language/Runtime for embedding and the independent Extensibility SDK for provider authoring.
 2. Build a host context and explicitly grant the [permissions](./host-permissions) your scripts need; the default grants none.
-3. Register [typed extern handlers](./register-externs.md) and, when needed, [host-provided types](./host-managed-types.md) your scripts can use.
+3. Register [typed extern handlers](./register-externs.md) or [SDK 3 async library functions](./async-libraries) and, when needed, [host-provided types](./host-managed-types.md) your scripts can use.
 4. Load scripts (with include resolution if needed).
 5. Resolve exported function signatures.
 6. Execute exported functions and handle results/errors.
@@ -25,7 +25,7 @@ FScript is designed for host applications that embed a scripting language safely
 
 1. [Real-World Embedding (Load, Resolve Type, Execute)](./real-world-embedding)
 2. [Fable and JavaScript Hosts](./fable-javascript)
-3. [Register Extern Functions](./register-externs)
+3. [Register Extern Functions](./register-externs) and [Create Async Libraries](./async-libraries)
 4. [Host-Provided Types](./host-managed-types)
 5. [Environment Configuration](../reference/environment-configuration)
 6. [Resolver and Includes](./resolver-and-includes)

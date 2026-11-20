@@ -159,8 +159,20 @@ let settings =
 
 // Inspect settings.RootDirectory, DefaultExterns, ExternAssemblies,
 // and ConfigurationPath before enabling executable providers.
-let registration = EnvironmentLoader.load settings |> require
+let permissions = FScript.Language.HostPermissions.Native ||| FScript.Language.HostPermissions.Threading
+let registration = EnvironmentLoader.loadWithPermissions permissions settings |> require
 let loaded = ScriptHost.loadFileWithRegistration registration "scripts/build.fss"
 ```
 
 The caller supplies its default root and optional overrides. Explicitly registered functions/types remain available through the normal [embedding APIs](../embedding/real-world-embedding); a manifest is optional for embedders too.
+
+## SDK 3 libraries and Runtime Process
+
+SDK 3 providers expose asynchronous I/O and leave task spawning/awaiting to scripts.
+They use assembly identity `3.0.0.0`; SDK 2 providers must rebuild. See
+[Create Async Libraries](../embedding/async-libraries) for a complete example.
+
+Runtime includes Process in its default externs without a package or assembly
+import. Disabling default externs removes it. Process.exec requires Native;
+defaults and data types need no grants. Script task operations retain their
+separate Threading checks. Neither a manifest nor a provider grants permissions.
