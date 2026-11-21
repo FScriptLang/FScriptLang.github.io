@@ -67,7 +67,7 @@ dotnet run --project src/FScript -- script.fss
 | `--root <path>`, `-r <path>` | Override filesystem/import root |
 | `--config <path>`, `-c <path>` | Override automatic selection with an explicit environment manifest |
 | `--no-config` | Disable automatic manifest loading |
-| `--no-default-externs` | Omit the 21 default runtime externs; retain the core library |
+| `--no-default-externs` | Disable the [additional CLI modules](../stdlib/overview#availability) |
 | `--extern-assembly <path>` | Add providers from an assembly; repeat to add more |
 | `--` | End CLI parsing; following arguments become `Env.Arguments` |
 
@@ -96,7 +96,7 @@ REPL submissions do not resolve file imports. Use file mode for multi-file scrip
 # Override root
 dotnet run --project src/FScript -- --root /tmp/sandbox script.fss
 
-# Disable default externs
+# Disable additional CLI modules
 dotnet run --project src/FScript -- --no-default-externs script.fss
 
 # Add extern providers from assembly

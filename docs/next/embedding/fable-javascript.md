@@ -5,7 +5,7 @@ slug: /embedding/fable-javascript
 sidebar_label: Fable and JavaScript
 ---
 
-FScript can run in JavaScript hosts through the Fable-compiled `@magnusopera/fscript` package. The package targets Node and browser-compatible ESM environments and exposes the core language pipeline without the .NET runtime extern catalog.
+FScript can run in JavaScript hosts through the Fable-compiled `@magnusopera/fscript` package. The package targets Node and browser-compatible ESM environments and includes the core language features.
 
 Use this package when a JavaScript application needs to parse, type-check, evaluate, load, or invoke FScript code directly in-process.
 
@@ -331,7 +331,7 @@ try {
 
 ## Current limits
 
-The Fable package exposes the core language engine, virtual imports, exported invocation, tagged values, sessions, and JavaScript-provided externs. It does not include .NET runtime externs such as `Fs.*`, `Console.*`, `Task.spawn`, or `Task.await`.
+The Fable package exposes the core language engine, virtual imports, exported invocation, tagged values, sessions, and JavaScript-provided externs. The package omits CLI modules such as `Fs` and `Console`, as well as `Task.spawn` and `Task.await`.
 
 Try the browser runtime in the [FScript sandbox](/sandbox).
 

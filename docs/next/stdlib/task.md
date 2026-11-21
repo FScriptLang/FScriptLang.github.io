@@ -6,7 +6,7 @@ slug: /stdlib/task
 
 **Hosted interpreter permissions:** Every `Task.*` function requires `Threading`, including `fromResult`, delays, awaits, and continuations. Tasks inherit the invocation’s grants. These checks do not apply to CLI execution or compilation. See [Host permissions](../embedding/host-permissions).
 
-The Task module creates and composes concurrent work. All functions are optional .NET runtime externs: the CLI provides them by default; embedding hosts can register `TaskExterns.all` or a subset. `--no-default-externs` removes them. Canonical task execution is unsupported in Fable/JavaScript and in the standalone LIR interpreter; both compiled .NET backends implement the API.
+The Task module creates and composes concurrent work. The CLI enables these functions by default for script execution and compilation to .NET and C#. Task execution is unavailable in JavaScript and the standalone LIR interpreter. A .NET embedding host can expose selected functions or the full set through `TaskExterns.all`.
 
 A task has the native postfix type `'a task`. Lists are homogeneous: every candidate in a task list must return the same type. Callbacks return ordinary values, and their return value becomes the new task's result. No operation automatically flattens a task returned by a callback.
 

@@ -6,7 +6,7 @@ slug: /stdlib/regex
 
 **Hosted interpreter permissions:** Every function and value on this page requires no host permissions. Higher-order functions still enforce the requirements of their callbacks. These checks do not apply to CLI execution or compilation. See [Host permissions](../embedding/host-permissions).
 
-`Regex` is provided by the default .NET runtime extern registry and uses .NET regular-expression syntax.
+`Regex` uses .NET regular-expression syntax.
 
 ## `Regex.matchGroups : string -> string -> string list option`
 

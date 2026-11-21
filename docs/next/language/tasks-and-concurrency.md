@@ -8,7 +8,7 @@ Use tasks after you are comfortable with functions and your execution mode. Task
 
 For interpreted CLI examples, grant `Threading`: `fscript --permissions Threading work.fss`. Examples that also call `Console.writeLine` need `IO,Threading`. An embedded .NET host must expose the task APIs and grant the same capabilities. Compiled programs use OS permissions. See [Permissions and Safety](../advanced/permissions-and-safety.md).
 
-The `Task` functions are provided by the default runtime extern registry, so an embedding host may choose not to expose them.
+The CLI enables the `Task` functions by default. An embedding host can choose which functions to expose.
 
 ## Task type
 

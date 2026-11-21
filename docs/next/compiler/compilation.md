@@ -75,7 +75,7 @@ See [Compile to .NET](./compile-to-dotnet.md) for FFI configuration, typed bindi
 
 Compilation is an explicit CLI or compiler API operation. Running `fscript program.fss` or using ordinary `ScriptHost` embedding continues to use the AST interpreter. JavaScript embedding also remains interpreted.
 
-The separate [IR workflow](./interpret-ir.md) produces a versioned `.fsir` artifact and executes it with the LIR interpreter. It is useful for compiler tooling and conformance work; it is not required to run compiled .NET programs.
+FScript maintainers use the [IR workflow](./interpret-ir.md) to inspect compiler output, reproduce bugs, and test execution with the LIR interpreter.
 
 ## Check FFI task sharing before compiling
 

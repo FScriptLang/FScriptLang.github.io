@@ -4,9 +4,9 @@ title: Standard Library Signature Index
 slug: /reference/stdlib
 ---
 
-This is the complete catalog of core functions/values and default .NET runtime externs. Each name links to argument order, examples, and failure behavior. Type variables are local to each signature; repeated variables in a row must agree.
+This is the standard library catalog for the FScript CLI. Each name links to argument order, examples, and failure behavior. Type variables are local to each signature; repeated variables in a row must agree.
 
-**Core** functions are always available. **Runtime** functions require host registration, are enabled by default in the CLI, and are disabled by `--no-default-externs` or `runtime.default-externs = false`. JavaScript hosts provide their own externs. Registered custom providers add functions beyond this standard catalog. Click a permission tag to read its definition. **None** means that the function requires no capabilities. The **Host permissions** column applies to hosted and interpreted CLI execution, both defaulting to none. CLI flags or the selected manifest can grant permissions. Compilation remains unrestricted. Provider FFI requires `Native`; callbacks retain their own requirements. See [Host permissions](../embedding/host-permissions).
+Embedded environments may expose different modules. See [standard library availability](../stdlib/overview#availability). **None** means that the function requires no capabilities. The **Host permissions** column applies to hosted and interpreted CLI execution, both defaulting to none. CLI flags or the selected manifest can grant permissions. Compilation remains unrestricted. Provider FFI requires `Native`. Callbacks retain their own permission requirements. See [Host permissions](../embedding/host-permissions).
 
 ## Top-level surface
 
@@ -103,7 +103,7 @@ This is the complete catalog of core functions/values and default .NET runtime e
 | [`String.toLower`](../stdlib/string) | `string -> string` | <a className="permission-tag permission-tag--none" href="../embedding/host-permissions#none" title="None permission definition">None</a> |
 | [`String.toUpper`](../stdlib/string) | `string -> string` | <a className="permission-tag permission-tag--none" href="../embedding/host-permissions#none" title="None permission definition">None</a> |
 
-## Default .NET runtime
+## I/O, concurrency, and data utilities
 
 ### Ref
 
@@ -197,8 +197,6 @@ Constructors and syntax are separate from function registration: `Some`/`None`, 
 `Env.setExitCode : int -> unit` selects the eventual shell status without stopping evaluation; see [core builtins](../stdlib/builtins#envsetexitcode). It is effectful and accepts codes `0..255`.
 
 ## Expanded pure support library
-
-Path, Glob, SemVer, scalar, and collection additions are core builtins. Encoding and SHA-256 are pure .NET runtime externs and need host registration. See each module for ordering, errors, and platform rules.
 
 ### Int additions
 

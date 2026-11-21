@@ -12,7 +12,7 @@ Scripts can only perform actions that your host exposes and permits. See [Host P
 
 - Do not expose risky externs by default.
 - Restrict filesystem scope with root/deny policies.
-- Treat symlinks and reparse points as sandbox boundary risks; built-in `Fs.*` externs reject those paths.
+- Treat symlinks and reparse points as sandbox boundary risks. The `Fs` module rejects those paths.
 - Use host cancellation/time limits for cooperative execution and propagate cancellation into async I/O. Enforce memory limits and use process isolation when termination must be guaranteed.
 - Treat script execution as untrusted input handling.
 

@@ -10,13 +10,13 @@ Start here after [imports and exports](./guided-examples.md#5-imports--exports-m
 
 ## Run the sample
 
-Run the sample directly with the installed FScript CLI (0.81.5 or later), from the repository root:
+Run the sample from the repository root with the FScript CLI:
 
 ```sh
 fscript samples/ffi/main.fss
 ```
 
-The CLI finds `samples/ffi/fscript.toml` beside `main.fss` automatically. With CLI 0.81.4 or earlier, pass `--config samples/ffi/fscript.toml` explicitly.
+The CLI finds `samples/ffi/fscript.toml` beside `main.fss` automatically.
 
 Execution starts in `main.fss`, which loads the scene and starts rendering through the graphics provider.
 
@@ -28,7 +28,7 @@ Check out the [FScript repository](https://github.com/FScriptLang/FScript) and b
 dotnet build samples/ffi/Provider/FfiSample.fsproj -c Release
 ```
 
-This compiles the FFI library used by `fscript`. Rebuild it when changing provider code; script edits only require running the `fscript` command again. Version 0.81.3 includes the macOS signing entitlement required to load GLFW.
+This compiles the FFI library used by `fscript`. Rebuild it when changing provider code; script edits only require running the `fscript` command again.
 
 ### Window and headless execution
 
@@ -65,7 +65,7 @@ out/ffi/main --frames 3
 The sample enables `size-optimized = true` in its manifest to trade culture support and framework diagnostics for a smaller executable. It enables invariant globalization, replaces framework exception messages with resource keys, and disables runtime stack traces and EventSource. Use `--no-size-optimized` to override that default. AOT without configured size optimization keeps those facilities. Both modes optimize native code for size and embed only the selected platform's GLFW library; the provider DLL remains portable for interpreted execution.
 
 
-On macOS ARM64 with .NET SDK 10.0.403, the executable shrank from 4,378,616 bytes to 2,181,464 bytes with ordinary AOT, or 1,882,776 bytes with `--size-optimized`. Both profiles passed headless and real OpenGL checks. Sizes depend on SDK and platform; see [Native AOT executable size](../compiler/compile-to-dotnet.md#native-aot-executable-size) for the investigation and runtime tradeoffs.
+On macOS ARM64 with .NET SDK 10.0.403, the executable measured 2,181,464 bytes with ordinary AOT and 1,882,776 bytes with `--size-optimized`. Both profiles passed headless and real OpenGL checks. Sizes depend on SDK and platform; see [Native AOT executable size](../compiler/compile-to-dotnet.md#native-aot-executable-size) for the investigation and runtime tradeoffs.
 
 The compiler reports its phases and output path. The result is one executable, `main.exe` on Windows. Publishing requires the .NET 11 SDK and the platform's native compiler; running the result requires no .NET installation. The provider supplies static CLR companions and typed setup/render delegates. GLFW binaries are embedded in the renderer and extracted only for graphical startup. Desktop graphics and OpenGL drivers are still required for a window.
 

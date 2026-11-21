@@ -6,7 +6,7 @@ slug: /stdlib/json
 
 **Hosted interpreter permissions:** Every function and value on this page requires no host permissions. Higher-order functions still enforce the requirements of their callbacks. These checks do not apply to CLI execution or compilation. See [Host permissions](../embedding/host-permissions).
 
-`Json` is provided by the default .NET runtime extern registry. It converts FScript values without reflecting arbitrary CLR objects.
+Use `Json` to convert between FScript values and JSON text.
 
 ## `Json.deserialize<'a> : string -> 'a option`
 

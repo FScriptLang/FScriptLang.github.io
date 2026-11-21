@@ -230,7 +230,7 @@ The view runtime is embedded only for assembly generation and pruned when unused
 
 ## Compiled list initialization
 
-Since FScript 0.90.2, both compiled targets fill the `List.init` result array in one indexed loop. The .NET assembly target can call a known initializer directly from that loop. Other initializers use a typed delegate.
+Both compiled targets fill the `List.init` result array in one indexed loop. The .NET assembly target can call a known initializer directly from that loop. Other initializers use a typed delegate.
 
 The loop validates the count before invoking the initializer. It calls the initializer once per index in ascending order, stops at the first exception, and returns an empty list for a count of zero.
 

@@ -64,7 +64,7 @@ fscript analyze samples/ffi/main.fss
 fscript compile samples/ffi/main.fss --target csharp --output out/ffi-csharp
 ```
 
-You can also add providers with `--extern-assembly` and disable built-in externs with `--no-default-externs`. Use repeated `--reference` arguments for additional managed assemblies outside the discovered dependency closure. Explicit assembly flag paths resolve from the working directory. For example, without a manifest:
+You can also add providers with `--extern-assembly` and disable the [additional CLI modules](../stdlib/overview#availability) with `--no-default-externs`. Use repeated `--reference` arguments for additional managed assemblies outside the discovered dependency closure. Explicit assembly flag paths resolve from the working directory. For example, without a manifest:
 
 ```sh
 fscript compile extension.fss --target csharp --output out/extension-csharp --extern-assembly path/to/Provider.dll --reference path/to/Dependency.dll
