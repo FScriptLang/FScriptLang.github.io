@@ -1,6 +1,6 @@
 {
   "name": "@fscriptlang/website",
-  "version": "0.95.1",
+  "version": "0.95.2",
   "private": true,
   "scripts": {
     "prepare:docs": "node scripts/assemble-docs.mjs",
