@@ -15,7 +15,7 @@ Defaults below are shipped by the extension. Resource settings resolve in the ow
 | `fscript.lsp.enabled` | `true` | Enable the FScript language server features (completion, navigation, diagnostics, inlay hints). |
 | `fscript.inlayHints.enabled` | `true` | Enable inlay hints provided by the FScript language server. |
 | `fscript.hoverHints.enabled` | `true` | Enable hover hints provided by the FScript language server. |
-| `fscript.cli.path` | `""` | CLI executable or `fscript.dll` for Run Current Script and debugging. Empty uses `fscript` on PATH. Relative file paths use the owning workspace folder, or script directory for standalone files. DLLs run through `dotnet` on PATH. |
+| `fscript.cli.path` | `""` | CLI executable or `fscript.dll` for Run Current Script, debugging, and Test Explorer. Empty uses `fscript` on PATH. Relative file paths use the owning workspace folder, or script directory for standalone files. DLLs run through `dotnet` on PATH. |
 | `fscript.server.path` | `""` | Optional path to a custom FScript.LanguageServer.dll. Relative paths are resolved from the workspace folder, or extension directory for standalone files. |
 | `fscript.server.logLevel` | `"info"` | Requested language server log level sent through initialization options. |
 | `fscript.repl.command` | `"auto"` | Shell command used to launch the FScript REPL terminal. Use 'auto' to prefer local workspace CLI via dotnet run, then fallback to 'fscript'. |
@@ -39,6 +39,7 @@ All commands appear in the Command Palette under **FScript**.
 | Execute Current Script in REPL | `fscript.executeCurrentScriptInRepl` | Send the current script to the REPL. |
 | Run Current Script | `fscript.runScript` | Run the active saved script using the selected CLI and environment. |
 | Debug Current Script | `fscript.debugScript` | Debug the active saved script using the same launch provider as F5. |
+| Discover Generated Tests | `fscript.discoverGeneratedTests` | Initialize test files to list cases registered at runtime. Requires workspace trust. |
 | Select Configuration | `fscript.selectConfiguration` | Select automatic discovery, a manifest, or no configuration for a workspace folder. |
 
 The configuration status item shows the effective selection and its source or failure. Server health/output access is separate. A saved manifest or provider DLL change restarts only the affected environment server and resynchronizes open buffers. A custom server path must point to a compatible language-server assembly.
@@ -59,3 +60,8 @@ Debugging supports source/inline breakpoints, expression stepping, logical task
 control, read-only variables, and safe watches. It requires workspace trust and
 saved source. See [Debugging](../learn/debugging.md) for launch configuration,
 native callback behavior, and limitations.
+
+
+## Test Explorer
+
+The Testing view provides **Run**, **Debug**, and **Run with Profiling** for FScript tests. Ordinary run output and the opt-in timing report appear in **Test Results**. Debug output goes to the integrated terminal. Test runs read the owning workspace folder's manifest by default. The editor's selected per-script environment applies to Run Current Script and ordinary F5 launches. See [Run tests in VS Code](../interpreter/testing.md#run-tests-in-vs-code).

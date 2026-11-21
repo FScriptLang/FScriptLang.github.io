@@ -89,7 +89,7 @@ All packages in one manifest resolve together and load their dependencies in the
 
 ## CLI usage and precedence
 
-The CLI automatically loads `fscript.toml` beside the entry script, or in the current working directory for stdin/REPL. It checks only that directory: no parent or nested directory search, and no working-directory fallback for file execution. Imported scripts use the entry script’s environment. With no manifest, defaults apply.
+The CLI automatically loads `fscript.toml` beside the entry script, or in the current working directory for stdin, REPL, and project tests. It checks only that directory: no parent or nested directory search, and no working-directory fallback for file execution. Imported scripts use the entry script’s environment. With no manifest, defaults apply.
 
 You can override or disable discovery:
 
@@ -181,7 +181,7 @@ separate Threading checks. CLI configuration can select permissions; embedding c
 
 ## Interpreter permission selection
 
-Interpreted file execution, stdin, REPL, debugging, and static analysis default
+Interpreted file execution, stdin, REPL, debugging, project tests, and static analysis default
 to no permissions. Select an exact set on the command line:
 
 ```sh

@@ -30,7 +30,7 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: 'Interpreter',
       link: {type: 'doc', id: 'interpreter/overview'},
-      items: ['interpreter/running-scripts', 'interpreter/configuration-and-permissions'],
+      items: ['interpreter/running-scripts', 'interpreter/testing', 'interpreter/configuration-and-permissions'],
     },
     {
       type: 'category',

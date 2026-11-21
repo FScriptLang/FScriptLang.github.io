@@ -1,8 +1,8 @@
 {
-  "tag": "v0.95.2",
+  "tag": "v0.95.3",
   "copiedFrom": {
     "repository": "FScriptLang/FScriptLang.github.io",
     "ref": "main",
-    "commit": "b4e9a5cb03c50de8f74b8af92732d1039014d1b7"
+    "commit": "884f70b50ccd131cee6ffd65397ffca5479dc1b3"
   }
 }

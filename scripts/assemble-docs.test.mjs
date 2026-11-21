@@ -14,6 +14,12 @@ const changelog = `# Changelog
 
 ## [0.95]
 
+### [v0.95.3]
+
+- Run project tests and use Test Explorer.
+
+**Full Changelog**: https://github.com/FScriptLang/FScript/compare/v0.95.2...v0.95.3
+
 ### [v0.95.2]
 
 - Fix keyword highlighting in the language server.
@@ -183,7 +189,11 @@ test('Actual manuals assemble the newcomer progression for Stable and Next', asy
   const stable = JSON.parse(read('versioned_sidebars/version-stable-sidebars.json')).docs;
   const interpreter = stable.find(({label}) => label === 'Interpreter');
   assert.ok(interpreter.items.includes('interpreter/configuration-and-permissions'));
+  assert.ok(interpreter.items.includes('interpreter/testing'));
+  const testing = read('versioned_docs/version-stable/interpreter/testing.md');
+  assert.match(testing, /fscript test/);
+  assert.match(testing, /Run with Profiling/);
   const stableNotes = read('versioned_docs/version-stable/whats-new.md');
-  assert.match(stableNotes, /^### v0\.95\.2$/m);
+  assert.match(stableNotes, /^### v0\.95\.3$/m);
   assert.doesNotMatch(stableNotes, /^## Unreleased$/m);
 });
