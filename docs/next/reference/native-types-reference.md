@@ -135,8 +135,12 @@ Mixed numeric types and nonnumeric operands are rejected. `+` does not concatena
 
 See [Type System](../language/type-system) for the type hierarchy and specialization examples.
 
-## Function values and type tokens
+## Function values
 
-Functions use `argument -> result`; arrows associate to the right. A function is applied with whitespace, passed as a value, or captured in a closure. `unit -> 'a` functions are called with `()`. Function values have no list/map-style indexer.
+A function type has the form `argument -> result`. Arrows associate to the right, so `int -> string -> bool` describes a function that takes an `int` and returns a function of type `string -> bool`.
 
-`typeof Name` produces a runtime `type` token for a known declared type. Tokens are intended for host functions such as `Json.deserialize`; they do not expose CLR reflection or construct instances. `nameof binding` produces a `string` after checking that the binding exists. See [Syntax and Operators](./syntax-reference.md) for annotations, expressions, and precedence.
+Apply a function with whitespace, as in `format value`. For a function with a unit parameter, pass `()`, as in `ping ()`. You can also pass functions as arguments, return them from other functions, or capture them in closures. See [Syntax and Operators](./syntax-reference.md) for application precedence.
+
+## Type tokens
+
+`typeof Name` produces a runtime value of type `type` that identifies a declared FScript type. Scripts can pass these tokens to host functions that accept them.
