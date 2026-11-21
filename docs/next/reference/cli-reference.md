@@ -28,13 +28,13 @@ fscript version
 ## Test projects
 
 ```sh
-fscript test [--filter <substring>] [--profile] [--config <path> | --no-config]
-             [--no-default-externs] [--permissions <names>] [--extern-assembly <path> ...]
+fscript test [--file <path>] [--case <name> | --filter <substring>] [--profile]
+             [--config <path> | --no-config] [--no-default-externs] [--permissions <names>] [--extern-assembly <path> ...]
 ```
 
-Run the command from the project directory. The runner discovers `*_test.fss` files recursively, runs named cases, and reports failures with source locations. `--filter` matches a case-sensitive substring of the full case name. `--profile` shows file setup timings and the ten slowest selected cases. The command returns 0 when all selected cases pass, or 1 on failure or when no cases match.
+Run the command from the project directory. The runner discovers `*_test.fss` files recursively, runs named cases, and reports failures with source locations. `--filter` matches a case-sensitive substring of the full case name. `--profile` shows file setup timings and the ten slowest selected cases. The command returns 0 when all selected cases pass, or 1 on failure or when no cases match. Use `--file` with a project-relative path to select a test file. Add `--case` for an exact case name in that file, such as `--case "doubling / positive"`.
 
-The default `fscript.toml` is in the working directory. Use `--config` or `-c` to select a different manifest. Permission overrides and repeatable external-assembly flags work as in interpreted execution. See [Testing FScript projects](../interpreter/testing.md) for test registration, named data rows, and assertions.
+The default `fscript.toml` is in the working directory. Use `--config` or `-c` to select a different manifest. Permission overrides and repeatable external-assembly flags work as in interpreted execution. See [Testing FScript projects](../interpreter/testing.md) for assertions, named data rows, and VS Code Test Explorer.
 
 ## Compile programs
 

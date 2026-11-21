@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 
+- Document VS Code Test Explorer and Run with Profiling in Next.
 - Add a project testing guide and CLI reference to Next.
 - Document default-deny interpreter permissions, CLI and TOML selection, and unrestricted compilation in Next.
 - Explain SDK 3 async library authoring and Runtime process permissions throughout the Next manual.

@@ -56,3 +56,18 @@ fscript test --profile
 Filtering uses a case-sensitive substring of the full case name. Each discovered file still initializes before the runner selects its cases. The opt-in profile reports wall-clock setup times for all files and the ten slowest selected cases, including failures. Setup includes loading imports, parsing, type checking, and registering cases. Each row in `Test.each` is timed separately.
 
 The test runner reads `fscript.toml` from the working directory by default and uses the same permission policy as interpreted execution. The test APIs are supplied by `fscript test` and work with default externs disabled. For flags and configuration, see the [CLI reference](../reference/cli-reference.md#test-projects).
+
+
+## Run tests in VS Code
+
+Open a workspace folder containing your `*_test.fss` files and select **Testing** in the Activity Bar. FScript lists test files, literal `Test.case` names, and named `Test.each` rows. Use **Run** or **Debug** on a file, case, or row. Set breakpoints in the test or in imported code before debugging. In **Test Results**, select an assertion failure to jump to its source.
+
+Automatic discovery parses files without running their setup. For cases registered by code at runtime, use **FScript: Discover Generated Tests** from the Command Palette. That command initializes the test files in a trusted workspace without running their cases. Runs and debug sessions require workspace trust and use the owning workspace folder's `fscript.toml` by default.
+
+### View console output and timings
+
+Open **Test Results** after a run to see the test's stdout, including `Console.writeLine`. Debug sessions use the integrated terminal for console output.
+
+For timings, choose **Run with Profiling** from the run profile picker. The report appears below console output in **Test Results**, including on a failed run. It shows file setup time and the slowest selected cases. Each file or individually selected case gets its own report. The ordinary **Run** profile remains the default.
+
+Test Explorer requires a compatible FScript extension and CLI. Set `fscript.cli.path` if your CLI is outside PATH. See [VS Code settings and commands](../reference/editor-reference.md#test-explorer).
