@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync} from 'node:fs';
+import {cpSync, mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync} from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import {test} from 'node:test';
@@ -114,4 +114,60 @@ test('Runtime refresh selects npm latest without modifying dependency manifests 
   calls = 0;
   await assert.rejects(prepareRuntime({wait: async () => {}, run: () => {calls++; throw new Error('Unavailable');}}), /Unavailable/);
   assert.equal(calls, 3);
+});
+
+test('Actual manuals assemble the newcomer progression without promoting Next to Stable', async (t) => {
+  const source = new URL('../', import.meta.url);
+  const directory = mkdtempSync(path.join(os.tmpdir(), 'fscript-modes-'));
+  t.after(() => rmSync(directory, {recursive: true, force: true}));
+  cpSync(new URL('docs', source), path.join(directory, 'docs'), {recursive: true});
+  for (const edition of ['next', 'stable']) {
+    cpSync(new URL(`sidebars.${edition}.ts`, source), path.join(directory, `sidebars.${edition}.ts`));
+  }
+  await assembleDocs({directory, changelog, runtimeVersion: '0.94.3'});
+  const read = (file) => readFileSync(path.join(directory, file), 'utf8');
+  const next = JSON.parse(read('.generated/sidebars.json')).docs;
+  assert.deepEqual(next.filter((item) => typeof item !== 'string').map(({label}) => label),
+    ['Quickstart', 'Language Tour', 'Interpreter', 'Compiler', 'Embedded', 'Advanced', 'Samples', 'Standard Library', 'Reference']);
+  const ids = [];
+  const collect = (items) => {
+    for (const item of items) {
+      if (typeof item === 'string') ids.push(item);
+      else {
+        if (item.link?.type === 'doc') ids.push(item.link.id);
+        collect(item.items);
+      }
+    }
+  };
+  collect(next);
+  assert.equal(new Set(ids).size, ids.length, 'Every sidebar document appears once in pagination');
+  const quickstart = next.find(({label}) => label === 'Quickstart');
+  assert.deepEqual(quickstart.items, ['learn/editor-setup', 'learn/first-script', 'learn/debugging']);
+  const tour = next.find(({label}) => label === 'Language Tour');
+  assert.ok(tour.items.every((id) => id.startsWith('language/') && id !== 'language/tasks-and-concurrency'));
+  const advanced = next.find(({label}) => label === 'Advanced');
+  const advancedIds = [];
+  const previous = ids.length;
+  collect(advanced.items);
+  advancedIds.push(...ids.splice(previous));
+  for (const id of ['embedding/register-externs', 'embedding/async-libraries', 'embedding/host-permissions', 'language/tasks-and-concurrency', 'learn/task-sharing-analysis']) {
+    assert.ok(advancedIds.includes(id), `${id} belongs to Advanced`);
+    assert.ok(!tour.items.includes(id), `${id} does not interrupt the language tour`);
+  }
+  for (const [mode, file] of [
+    ['interpreter', 'interpreter/overview.md'],
+    ['compiler', 'compiler/compilation.md'],
+    ['embedding', 'embedding/overview.md'],
+  ]) {
+    const category = next.find(({link}) => link?.id?.startsWith(`${mode}/`));
+    assert.ok(category, `${mode} overview is navigable through its category link`);
+    assert.ok(!category.items.includes(category.link.id), `${mode} overview appears only once in pagination`);
+    assert.equal(read(`.generated/next/${file}`), read(`docs/next/${file}`));
+  }
+  for (const file of ['running-scripts', 'configuration-and-permissions']) {
+    assert.equal(read(`.generated/next/interpreter/${file}.md`), read(`docs/next/interpreter/${file}.md`));
+  }
+  assert.equal(read('versioned_docs/version-stable/intro.md'), read('docs/stable/intro.md'));
+  const stable = JSON.parse(read('versioned_sidebars/version-stable-sidebars.json')).docs;
+  assert.ok(!stable.some(({label}) => label === 'Interpreter'));
 });

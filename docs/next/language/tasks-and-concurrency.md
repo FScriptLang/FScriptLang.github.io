@@ -4,7 +4,9 @@ title: Tasks and Concurrency
 slug: /language/tasks-and-concurrency
 ---
 
-FScript supports concurrent thunk execution through the default `Task` module surface.
+Use tasks after you are comfortable with functions and your execution mode. Tasks let independent operations run concurrently and let you coordinate their results.
+
+For interpreted CLI examples, grant `Threading`: `fscript --permissions Threading work.fss`. Examples that also call `Console.writeLine` need `IO,Threading`. An embedded .NET host must expose the task APIs and grant the same capabilities. Compiled programs use OS permissions. See [Permissions and Safety](../advanced/permissions-and-safety.md).
 
 The `Task` functions are provided by the default runtime extern registry, so an embedding host may choose not to expose them.
 

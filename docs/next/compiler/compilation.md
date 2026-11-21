@@ -1,10 +1,16 @@
 ---
 id: compilation
-title: Compilation
+title: Compiler
 slug: /compiler/overview
 ---
 
 FScript can run inside a host application or compile into a program that runs on its own. Compilation checks the same language types, resolves imported scripts, and produces ordinary .NET code. Generated programs do not load FScript source or start an interpreter.
+
+## Why choose the compiler?
+
+Use the [interpreter](../interpreter/overview.md) while learning and iterating. Choose the compiler when you want optimized execution or a program to distribute without source. Compilation is an explicit build step, not a faster setting for the REPL or `ScriptHost`. Measure your workload; the .NET backend's specialization, tail-call lowering, and eligible pipeline fusion are described in [Compiler Optimizations](./compiler-optimizations.md).
+
+If an application must load changing rules and invoke their exports under its own policy, use [Embedded](../embedding/overview.md). A standalone compiled program has its own entry point and process lifecycle.
 
 ## Choose an output
 
@@ -42,6 +48,14 @@ dotnet out/hello/hello.dll Ada
 The program writes `Hello Ada!`, followed by `()`, its final FScript result. Arguments after the assembly or executable name become `Env.Arguments`. `Env.ScriptName` contains the running assembly or executable filename.
 
 From a checkout, replace `fscript` with `dotnet run --project src/FScript --` in these commands.
+
+## Configuration and permissions
+
+Use `[runtime]` in `fscript.toml` to select .NET providers and `[compile]` to set build defaults. Explicit compiler flags override those defaults; `--config` selects a manifest and `--no-config` skips it. Settings and path precedence are documented in [Environment Configuration](../reference/environment-configuration.md).
+
+Compilation loads executable providers as trusted code and ignores valid `runtime.permissions`. The execution-only `--permissions` option is rejected by `compile`. Neither interpreter permission checks nor filesystem root restrictions are embedded in generated programs: control access with OS accounts, deployment configuration, or process/container isolation as appropriate.
+
+A managed assembly needs a compatible .NET runtime. Self-contained publishing includes the runtime; Native AOT needs the .NET SDK, platform build tools, and AOT-compatible dependencies. These are deployment choices, not replacements for an application host's capability policy.
 
 ## Language and runtime behavior
 

@@ -1,98 +1,43 @@
 ---
-title: Debugging
+title: Debug in VS Code
 ---
 
-Use the FScript VS Code extension and a recent CLI (`fscript` on PATH, or
-`fscript.cli.path` pointing to an executable or `fscript.dll`) to debug a
-saved `.fss` file. Debugging requires a trusted workspace and .NET execution;
-it is unavailable in the JavaScript/Fable host.
+Use the saved `pricing.fss` from [Your First Script](./first-script.md). Keep the final call as `quote 12` and the discount threshold as `10`. You will stop inside the function and inspect how it computes `228`.
 
-## Start a session
+## Set a breakpoint
 
-Open a script and press **F5**. Choose **FScript** if VS Code asks for a debugger.
+Click the gutter beside `pricePerSeat * seats` to add a breakpoint. This is the multiplication inside `quote`, after the price has been selected.
 
-You can also run **FScript: Debug Current Script** from the Command Palette,
-or choose **Debug Current Script** from the FScript editor context menu.
+Press **F5** and choose **FScript** if VS Code asks for a debugger. You can also run **FScript: Debug Current Script** from the Command Palette. The debugger launches the saved script through the installed CLI.
 
-A minimal `.vscode/launch.json` configuration is:
+## Inspect the calculation
 
-```json
-{
-  "version": "0.2.0",
-  "configurations": [
-    {
-      "type": "fscript",
-      "request": "launch",
-      "name": "Debug FScript",
-      "program": "${file}",
-      "stopOnEntry": false
-    }
-  ]
-}
-```
+When execution stops at the breakpoint:
 
-Use `args` for script arguments and `cwd` to override the terminal's working
-directory. For example, `"args": ["--headless"]` runs the graphics sample's
-headless mode. Input and output use VS Code's integrated terminal, so
-`Console.readLine ()` continues to work.
+1. Open **Variables → Locals**. Find `seats` (`12`) and `pricePerSeat` (`19`).
+2. Add `seats` and `pricePerSeat` to **Watch**, or enter these names individually in the Debug Console.
+3. Choose **Step Over** to evaluate the multiplication. Stepping follows expressions, so more than one stop can occur on a source line.
+4. Use **Step Out** to return to the caller if you are still inside `quote`, then **Continue** to finish. The terminal prints `228`.
 
-The debugger uses the configuration selected by **FScript: Select Configuration**
-for the program's workspace folder. Select the graphics sample's manifest before
-debugging its `main.fss`. When no configuration is selected, debugging uses the
-editor's default environment rather than discovering another manifest.
+Watch expressions inspect values; they do not run function calls. If you want to test another input, edit the source and launch again.
 
-Try `samples/debugging/main.fss` in this repository. Set a breakpoint on
-`adjusted * 2` in `worker.fss` to inspect parameters, locals, captures, and two
-independent tasks. The pipeline in `run` also demonstrates expression stepping.
+## Try a second run
 
-## Breakpoints and stepping
+Change the call to `quote 3`, save, and press **F5** again. At the same breakpoint you should see `seats = 3` and `pricePerSeat = 29`. Continue and check that the result is `87`.
 
-Click the editor gutter to set a breakpoint. Inline breakpoints distinguish
-expressions on the same line. Nonexecutable locations remain unverified.
+You have now connected source, local values, and the final result. **Stop** ends a running session; restart debugging after source changes.
 
-- **Step Into** enters FScript functions and callbacks.
-- **Step Over** runs nested calls but still honors their breakpoints.
-- **Step Out** returns to the caller.
-- **Pause** stops at the next FScript expression boundary.
+## If the session does not start
 
-Stepping follows expressions, not just lines. Successive pipeline stages can
-stop on the same source line. At call and pipeline return boundaries, Locals
-contains `$result` with the completed operation's value.
+| Symptom | Check |
+| --- | --- |
+| FScript is not offered as a debugger | Install the FScript extension and save the file with a `.fss` extension. |
+| The CLI cannot be found | Run `fscript version` in VS Code's terminal; restart VS Code after changing `PATH`. The `fscript.cli.path` setting can select the executable explicitly. |
+| VS Code blocks the launch | Open the folder you created and enable workspace trust for it. |
+| The breakpoint stays unverified | Use the executable multiplication expression from the example rather than a blank line or type declaration. |
 
-The debugger can enter a FScript callback invoked by an extension, but cannot
-step through the extension's .NET implementation. Pausing a graphics callback
-also pauses its native caller, so its window may stop responding until you resume.
+This pure example needs no permission grants or launch configuration. Custom launch arguments, external providers, concurrent tasks, and inspection limits are covered later in [Debugging Larger Programs](../advanced/debugging.md). Local debugging uses .NET execution; it is unavailable in the JavaScript/browser playground.
 
-## Inspect values safely
+**Checkpoint:** you can stop a script, inspect its inputs, and explain its result.
 
-Call Stack shows FScript functions and logical tasks. Variables exposes
-parameters, locals, captures, and expandable collections. Host-managed values
-show their visible fields; hidden state is inaccessible.
-
-Watch and Debug Console expressions support names, imported qualified names,
-visible field access, parentheses, and primitive literals:
-
-```fsharp
-camera
-camera.Position
-camera.Position.X
-```
-
-Calls such as `Console.writeLine "hello"` or `NDArray.set array [0] 1.0` are
-rejected in watches. Inspection does not execute functions or mutate state.
-Variable editing is unavailable.
-
-## Tasks and session lifetime
-
-A breakpoint pauses only the task that reaches it. Other tasks continue, and a
-task awaiting the paused task waits naturally. Use Call Stack to select a task.
-DAP single-task execution controls leave other paused tasks untouched; ordinary
-Continue can resume them together.
-
-Uncaught exceptions stop with the originating FScript stack. Resume to propagate
-the failure using normal FScript task semantics.
-
-Stop ends the launched program and releases paused tasks. An unresponsive native
-call may require forced process termination. Restart debugging after changing
-source, configuration, or extension assemblies. Attaching to an existing host is
-not supported.
+**Next:** [Language Tour](./language-tour.md). Learn the building blocks that let you write larger scripts.

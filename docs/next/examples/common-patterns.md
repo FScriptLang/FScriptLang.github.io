@@ -4,6 +4,8 @@ title: Common Script Patterns
 slug: /examples/common-patterns
 ---
 
+These language-only patterns use pure functions and need no permission grants. Pair them with the [guided examples](./guided-examples.md) when you want a complete program.
+
 ## Normalize an optional value
 
 ```fsharp

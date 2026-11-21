@@ -8,7 +8,7 @@ const latestReleasedVersion = versions[0] ?? 'current';
 
 const config: Config = {
   title: 'FScript',
-  tagline: 'Script. Embed. Compile.',
+  tagline: 'Interpret. Compile. Embed.',
   favicon: 'img/favicon.ico',
 
   future: {
@@ -93,13 +93,18 @@ const config: Config = {
           position: 'left',
         },
         {
-          to: '/manual/embedding/overview',
-          label: 'Embedding',
+          to: '/manual/next/interpreter/overview',
+          label: 'Interpreter',
           position: 'left',
         },
         {
-          to: '/manual/compiler/overview',
-          label: 'Compilation',
+          to: '/manual/next/compiler/overview',
+          label: 'Compiler',
+          position: 'left',
+        },
+        {
+          to: '/manual/next/embedding/overview',
+          label: 'Embedded',
           position: 'left',
         },
         {

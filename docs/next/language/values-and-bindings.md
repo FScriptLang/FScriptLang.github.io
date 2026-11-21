@@ -4,7 +4,7 @@ title: Values and Bindings
 slug: /language/values-and-bindings
 ---
 
-A script computes values and gives them names with `let`. This chapter introduces the building blocks used by every later example. Run snippets with the CLI or in the browser playground; console examples need a host that supplies `Console.writeLine`.
+A script computes values and gives them names with `let`. This chapter introduces the building blocks used by every later example. Run snippets with the CLI or in the browser playground. Final expression values are enough to explore the language without console I/O.
 
 ## Primitive values
 
@@ -29,7 +29,7 @@ let total =
   let handling = 5
   subtotal + handling
 
-Console.writeLine $"total={total}"
+$"total={total}"
 ```
 
 `subtotal` and `handling` are local to the block. `total` is available afterward. The string `$"total={total}"` inserts an expression's value; `//` starts a line comment.

@@ -4,6 +4,8 @@ title: CLI Reference
 slug: /reference/cli
 ---
 
+For task-oriented guidance, start with [Interpreter](../interpreter/overview.md), then [Compiler](../compiler/compilation.md). To execute scripts inside your application through a host API, use [Embedded](../embedding/overview.md).
+
 ## Common commands
 
 ```bash

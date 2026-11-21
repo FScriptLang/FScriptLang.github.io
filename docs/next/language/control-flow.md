@@ -27,6 +27,8 @@ for x in [1; 2; 3] do
   Console.writeLine $"value={x}"
 ```
 
+For this console example, run `fscript --permissions IO loop.fss` in Next.
+
 The source must be a list and the body must return unit. Use `List.map` to produce a transformed list instead.
 
 ## `match`

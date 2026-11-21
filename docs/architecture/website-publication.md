@@ -32,3 +32,25 @@ runtime after preparation, before the deployment job can run.
 The initial URL is `https://fscriptlang.github.io/`. Repository
 variables select the URL and base path at build time for a later custom-domain
 handover. GitHub Pages settings and Cloudflare DNS remain owner-managed.
+
+## Next documentation navigation
+
+Next follows a newcomer progression: Introduction, Quickstart, Language Tour,
+Interpreter, Compiler, Embedded, Advanced, Samples, Standard Library, Reference.
+Quickstart covers installation, a first pure script, and VS Code debugging using
+the same example. The Language Tour introduces the language and groups its
+feature chapters; runtime concurrency and extension authoring live in Advanced.
+
+Each execution mode explains its purpose, configuration, and permission boundary.
+Advanced groups provider authoring, host-managed types, custom resolvers,
+threading, detailed permissions, and larger-program debugging. Basic permission
+requirements remain visible at the point of use. Category overview documents
+appear only through their category links so pagination never repeats an overview.
+Existing document IDs and URLs remain stable even when their sidebar category
+changes. New content is assembled and validated with the rest of Next.
+
+The home page and mode shortcuts retain Interpreter, Compiler, Embedded order
+and link to Next guides. The Docs entry and version selector retain access to the
+Stable manual; this reorganization does not promote unreleased capabilities to
+Stable. In particular, interpreted CLI permission selection is documented only
+in Next. Neither the language repository nor its release process changes.

@@ -12,7 +12,7 @@ Name a stable data shape with a record, or model a choice between states with a 
 type Project = { Name: string; Version: int }
 ```
 
-Declared ordinary records still participate in structural compatibility; their names document intent rather than impose CLR class identity. Opaque host-provided types follow stricter construction rules described in [Host-Provided Types](../embedding/host-managed-types).
+Declared ordinary records still participate in structural compatibility; their names document intent rather than impose CLR class identity.
 
 ## Union type
 

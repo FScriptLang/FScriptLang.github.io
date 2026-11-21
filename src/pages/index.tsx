@@ -6,7 +6,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 import styles from './index.module.css';
 
-type DemoKey = 'script' | 'compile' | 'dotnet' | 'javascript';
+type DemoKey = 'script' | 'interpret' | 'compile' | 'dotnet' | 'javascript';
 
 const demos: Record<DemoKey, {label: string; filename: string; language: string; code: string}> = {
   script: {
@@ -27,8 +27,23 @@ export let quote (customer: Customer) =
 
   basePrice * customer.Seats`,
   },
+  interpret: {
+    label: 'Interpreter',
+    filename: 'terminal',
+    language: 'Shell',
+    code: `# Learn with the interactive REPL
+fscript
+
+# Run a source file without a build step
+fscript pricing.fss
+
+# Select permissions for effectful scripts (Next)
+fscript --permissions IO report.fss
+
+# Keep repeatable settings in fscript.toml`,
+  },
   compile: {
-    label: 'Compile',
+    label: 'Compiler',
     filename: 'terminal',
     language: 'Shell',
     code: `# Iterate with the interpreter
@@ -48,7 +63,7 @@ fscript compile pricing.fss --target csharp \\
   --output out/pricing-csharp`,
   },
   dotnet: {
-    label: '.NET host',
+    label: 'Embedded .NET',
     filename: 'Pricing.fs',
     language: 'F#',
     code: `open System.IO
@@ -70,7 +85,7 @@ let total =
 // Change the rule. Keep the host.`,
   },
   javascript: {
-    label: 'JavaScript host',
+    label: 'Embedded JS',
     filename: 'pricing.mjs',
     language: 'JavaScript',
     code: `import { load, invoke } from
@@ -101,7 +116,7 @@ function DemoWindow() {
       <div className={styles.windowBar}>
         <div className={styles.windowDots} aria-hidden="true"><i /><i /><i /></div>
         <span className={styles.windowTitle}>{demo.filename}</span>
-        <span className={styles.liveBadge}><i /> {activeDemo === 'compile' ? 'standalone' : 'in-process'}</span>
+        <span className={styles.liveBadge}><i /> {activeDemo === 'script' ? 'source' : activeDemo === 'compile' ? 'standalone' : activeDemo === 'interpret' ? 'CLI' : 'in-process'}</span>
       </div>
       <div className={styles.demoTabs} role="tablist" aria-label="Interpret, compile, or embed FScript">
         {(Object.keys(demos) as DemoKey[]).map((key) => (
@@ -140,21 +155,21 @@ function HomepageHeader() {
       <div className={styles.orbTwo} aria-hidden="true" />
       <div className={`container ${styles.heroInner}`}>
         <div className={styles.heroCopy}>
-          <div className={styles.eyebrow}><span>Open source</span> · Script · Embed · Compile</div>
+          <div className={styles.eyebrow}><span>Open source</span> · Interpret · Compile · Embed</div>
           <Heading as="h1" className={styles.heroTitle}>
-            Script. Embed.<br /><em>Compile.</em>
+            Interpret. Compile.<br /><em>Embed.</em>
           </Heading>
           <p className={styles.heroLead}>
             FScript is a typed, functional scripting language for standalone programs and application scripting.
-            Run scripts with the interpreter, embed them in .NET and JavaScript applications, or compile
-            them to optimized .NET and native executables.
+            Start with the interpreter, compile for optimized .NET and native execution,
+            or embed scripts in an application that controls their APIs and resources.
           </p>
           <div className={styles.heroActions}>
             <Link className={styles.primaryAction} to="/sandbox">
               Try FScript <Arrow />
             </Link>
-            <Link className={styles.secondaryAction} to="#run-scripts">
-              Explore the options
+            <Link className={styles.secondaryAction} to="/manual/next/learn/quickstart">
+              Get started
             </Link>
           </div>
           <div className={styles.installLine}>
@@ -178,8 +193,8 @@ function HomepageHeader() {
       </div>
       <div className={styles.heroTicker} aria-label="How FScript runs">
         <div>
-          <span>RUN SCRIPTS</span><i>✦</i><span>EMBED IN .NET</span><i>✦</i><span>EMBED IN JAVASCRIPT</span><i>✦</i>
-          <span>COMPILE .NET</span><i>✦</i><span>PUBLISH NATIVE AOT</span><i>✦</i>
+          <span>INTERPRETER</span><i>✦</i><span>COMPILE .NET</span><i>✦</i><span>PUBLISH NATIVE AOT</span><i>✦</i>
+          <span>EMBED IN .NET</span><i>✦</i><span>EMBED IN JAVASCRIPT</span><i>✦</i>
         </div>
       </div>
     </header>
@@ -189,57 +204,56 @@ function HomepageHeader() {
 export default function Home() {
   return (
     <Layout
-      title="FScript: Script. Embed. Compile."
-      description="FScript is a typed, functional scripting language for standalone programs and application scripting. Run scripts, embed in .NET and JavaScript, or compile to .NET and native executables.">
+      title="FScript: Interpret. Compile. Embed."
+      description="FScript is a typed, functional scripting language for standalone programs and application scripting. Learn with the interpreter, compile for performance, or embed scripts under application control.">
       <HomepageHeader />
       <main className={styles.main}>
         <section className={styles.workflowScene} aria-label="Three ways to use FScript">
           <div className={`container ${styles.workflowGrid}`}>
             <div>
-              <p className={styles.sectionLabel}>Script</p>
-              <Heading as="h2" id="run-scripts">Run scripts.</Heading>
+              <p className={styles.sectionLabel}>Interpreter</p>
+              <Heading as="h2" id="run-scripts">Learn it. Run it.</Heading>
               <p>
-                Write standalone programs, automate everyday tasks, and explore ideas in the REPL.
-                Run <code>fscript program.fss</code> for a simple edit-and-run workflow, with static
-                type inference checking your code before execution.
+                Start here to get used to the language. Explore expressions in the REPL, automate
+                everyday tasks, and run <code>fscript program.fss</code> without a build step.
+                Static type inference checks source before execution.
               </p>
               <p>
-                Use immutable data, pattern matching, and the standard library to express your logic.
-                Connect to .NET libraries through typed FFI when your program needs more.
+                In Next, execution starts with no permissions. Choose grants, providers, and a
+                filesystem root through CLI options or <code>fscript.toml</code> as your script grows.
               </p>
-              <Link className={styles.inlineLink} to="/manual/learn/quickstart">Install and run <Arrow /></Link>
-              <Link className={styles.inlineLink} to="/sandbox">Try the playground <Arrow /></Link>
+              <Link className={styles.inlineLink} to="/manual/next/interpreter/overview">Use the interpreter <Arrow /></Link>
+              <Link className={styles.inlineLink} to="/manual/next/interpreter/configuration-and-permissions">Configure execution <Arrow /></Link>
             </div>
             <div>
-              <p className={styles.sectionLabel}>Embed</p>
-              <Heading as="h2">Script your app.</Heading>
+              <p className={styles.sectionLabel}>Compiler</p>
+              <Heading as="h2">Optimize. Distribute.</Heading>
               <p>
-                Embed FScript in .NET and JavaScript applications to make pricing, eligibility,
-                workflows, or customer-specific rules configurable. Load scripts, inspect exported
-                function types, and invoke their exports from your application.
+                Compile working scripts for performance and standalone deployment. Build optimized
+                .NET assemblies, self-contained executables, native AOT binaries, or a C# project.
+                Generated programs run without an FScript interpreter.
               </p>
               <p>
-                The host chooses which typed functions and resources scripts can use and where
-                imported source comes from. Load updated rules without rebuilding the application.
+                Set build and publishing defaults in <code>fscript.toml</code>. The .NET compiler
+                specializes functions and fuses eligible pipelines; generated programs run with OS permissions.
               </p>
-              <Link className={styles.inlineLink} to="/manual/embedding/overview">Embed FScript <Arrow /></Link>
-              <Link className={styles.inlineLink} to="/manual/embedding/register-externs">Expose typed host APIs <Arrow /></Link>
+              <Link className={styles.inlineLink} to="/manual/next/compiler/overview">Use the compiler <Arrow /></Link>
+              <Link className={styles.inlineLink} to="/manual/next/compiler/optimizations">Explore the optimizations <Arrow /></Link>
             </div>
             <div>
-              <p className={styles.sectionLabel}>Compile</p>
-              <Heading as="h2">Build programs.</Heading>
+              <p className={styles.sectionLabel}>Embedded</p>
+              <Heading as="h2">Put your app in control.</Heading>
               <p>
-                Compile standalone programs to optimized .NET assemblies, publish self-contained
-                executables, or use Native AOT to produce native binaries. Generated programs run
-                without an FScript interpreter.
+                Load scripts through a .NET or JavaScript host API, inspect exported types, and invoke
+                rules inside your application. Update pricing, policies, or workflows without rebuilding
+                the host application.
               </p>
               <p>
-                The compiler specializes functions, turns self tail calls into loops, and fuses eligible
-                pure collection pipelines. Use typed .NET FFI bindings, or generate a C# project
-                to integrate into your own build.
+                The host owns typed APIs, source resolution, lifecycle, and resource policy.
+                .NET hosts explicitly grant capabilities; optional configuration can narrow those grants.
               </p>
-              <Link className={styles.inlineLink} to="/manual/compiler/overview">Compile a program <Arrow /></Link>
-              <Link className={styles.inlineLink} to="/manual/compiler/optimizations">Explore the optimizations <Arrow /></Link>
+              <Link className={styles.inlineLink} to="/manual/next/embedding/overview">Embed FScript <Arrow /></Link>
+              <Link className={styles.inlineLink} to="/manual/next/embedding/host-permissions">Control host permissions <Arrow /></Link>
             </div>
           </div>
         </section>
@@ -292,7 +306,7 @@ export default function Home() {
                 without rebuilding the interface or restarting the process. The application keeps running; the part
                 you meant to make configurable is free to change.
               </p>
-              <Link className={styles.inlineLink} to="/manual/embedding/fable-javascript">Load rules from JavaScript <Arrow /></Link>
+              <Link className={styles.inlineLink} to="/manual/next/embedding/fable-javascript">Load rules from JavaScript <Arrow /></Link>
             </div>
           </div>
         </section>
@@ -302,9 +316,10 @@ export default function Home() {
             <p>FScript is open source.</p>
             <nav aria-label="Start using FScript">
               <Link to="/sandbox">Open the sandbox</Link>
-              <Link to="/manual/learn/quickstart">Install and run</Link>
-              <Link to="/manual/embedding/overview">Embed FScript</Link>
-              <Link to="/manual/compiler/overview">Compile a program</Link>
+              <Link to="/manual/next/learn/quickstart">Install and run</Link>
+              <Link to="/manual/next/interpreter/overview">Use the interpreter</Link>
+              <Link to="/manual/next/compiler/overview">Compile a program</Link>
+              <Link to="/manual/next/embedding/overview">Embed FScript</Link>
               <a href="https://github.com/FScriptLang/FScript">GitHub <Arrow /></a>
             </nav>
           </div>
