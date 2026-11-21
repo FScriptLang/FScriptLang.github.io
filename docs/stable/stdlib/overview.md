@@ -4,22 +4,22 @@ title: Stdlib Overview
 slug: /stdlib/overview
 ---
 
-Hosted interpreters grant no permissions by default. Each module page and the [complete signature index](../reference/stdlib) identify the capabilities required by every function. Pure built-ins require none; runtime effects need explicit host grants. See [Host permissions](../embedding/host-permissions).
+Hosted interpreters grant no permissions by default. Each module page and the [complete signature index](../reference/stdlib) identify the capabilities required by every function. Functions that require permissions need explicit host grants. See [Host permissions](../embedding/host-permissions).
 
-Start with lists, options, and maps for data transformations. Add runtime modules when a script needs files, console I/O, serialization, concurrency, or content encoding and hashing.
+The CLI makes the standard library available without imports.
 
 ## Availability
 
-| Surface | Modules or names | Available when |
+| Group | Modules or names | Availability |
 | --- | --- | --- |
 | Core functions and values | `List`, `Option`, `Map`, `String`, `Int`, `Float`, `Bool`, `Path`, `Glob`, `SemVer`, `ignore` | Always, including JavaScript hosts |
-| Default .NET runtime externs | `Console`, `Task`, `Mailbox`, `Fs`, `Json`, `Regex`, `Xml`, `Hash`, `Encoding`, `Guid` | The host registers them; the CLI enables them by default |
+| Additional CLI modules | `Console`, `Task`, `Mailbox`, `Ref`, `Fs`, `Json`, `Regex`, `Xml`, `Hash`, `Encoding`, `Guid`, `Process` | Enabled by default in the CLI. Availability in embedded scripts depends on the host. |
 | Exit status | `Env.setExitCode : int -> unit` | Effectful core operation; never terminates the host |
 | Execution metadata | `Env : Environment` | Injected by the CLI/REPL or supplied by an embedding host |
 
-No imports are needed for registered functions. An embedding host may expose a subset of the runtime catalog, and the CLI's `--no-default-externs` disables that catalog without removing core functions. The browser playground supplies its own capabilities; it does not load the .NET runtime.
+Use `--no-default-externs` or set `runtime.default-externs = false` to disable the additional CLI modules. See [JavaScript embedding](../embedding/fable-javascript) for package availability and host setup.
 
-`ignore` is a core function with type `'a -> unit`: `42 |> ignore` returns `()`. It needs no external provider. `Env` is a host-supplied value, not a function. See [Built-ins and Execution Metadata](./builtins).
+`ignore` is a core function with type `'a -> unit`: `42 |> ignore` returns `()`. `Env` is a host-supplied value, not a function. See [Built-ins and Execution Metadata](./builtins).
 
 ## Choose a module
 
@@ -32,7 +32,9 @@ No imports are needed for registered functions. An embedding host may expose a s
 | Parse and format scalar values | [Int, Float, Bool](./scalars) |
 | Read or write console text | [Console](./console) |
 | Run concurrent work and await results | [Task](./task) |
+| Launch a program and expose its async result | [Process](./process) |
 | Process messages from concurrent producers | [Mailbox](./mailbox) |
+| Store and replace a value | [Ref](./ref) |
 | Read, write, and discover files | [Fs](./fs) |
 | Decode and encode JSON | [Json](./json) |
 | Extract regular-expression capture groups | [Regex](./regex) |

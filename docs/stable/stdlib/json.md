@@ -6,22 +6,27 @@ slug: /stdlib/json
 
 **Hosted interpreter permissions:** Every function and value on this page requires no host permissions. Higher-order functions still enforce the requirements of their callbacks. These checks do not apply to CLI execution or compilation. See [Host permissions](../embedding/host-permissions).
 
-`Json` is provided by the default .NET runtime extern registry. It converts FScript values without reflecting arbitrary CLR objects.
+Use `Json` to convert between FScript values and JSON text.
 
-## `Json.deserialize : type -> string -> 'a option`
+## `Json.deserialize<'a> : string -> 'a option`
 
 <a className="permission-tag permission-tag--none" href="../embedding/host-permissions#none" title="None permission definition">None</a>
 
-Argument order is `typeToken -> json`. Use `typeof Name` for a declared type. The token selects the decoder at runtime; the generic function scheme does not statically tie the token to the result type. A function return annotation makes the intended result explicit, as below.
+Pass the target type in angle brackets. The result is an option of that type. FScript can also infer the target when an expected result type is available.
 
 ```fsharp
 type Settings = { Port: int; Label: string option }
-let decodeSettings json : Settings option =
-  Json.deserialize (typeof Settings) json
-let settings = decodeSettings "{\"Port\":8080}"
+let settings = Json.deserialize<Settings> "{\"Port\":8080}"
 match settings with
 | Some value -> Console.writeLine $"port={value.Port}, label={value.Label}"
 | None -> Console.writeLine "invalid settings"
+```
+
+Generic wrappers can forward their type argument.
+
+```fsharp
+let decode<'a> json : 'a option = Json.deserialize<'a> json
+let ports = decode<int list> "[8080,8081]"
 ```
 
 Malformed JSON, incompatible values, or unsupported target types return `None`.
@@ -33,7 +38,7 @@ Malformed JSON, incompatible values, or unsupported target types return `None`.
 | `'a list` | JSON array; every element must decode |
 | Tuple | JSON array with exactly the tuple's arity |
 | `'a option` | `null` becomes `None`; other values decode as `Some` |
-| Ordinary record | JSON object; field names are case-sensitive; extra properties are ignored |
+| Ordinary record, including generic and recursive records | JSON object; field names are case-sensitive; extra properties are ignored |
 | Map | JSON object; property names decode as string, int, or bool keys |
 
 Missing record fields are allowed only for option fields, which become `None`. A failed nested conversion fails the entire result. Union types, union map keys, functions, tasks, and host-managed types are unsupported decoding targets. Decoding cannot manufacture opaque host state, including inside a record or container.

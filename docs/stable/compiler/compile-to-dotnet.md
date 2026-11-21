@@ -93,7 +93,7 @@ The compiler packages its optimized assembly; it does not recompile the script t
 
 ## Native AOT executable size
 
-Since 0.87.1, Native AOT favors smaller native code through .NET's `OptimizationPreference=Size`. Ordinary `--aot` retains culture support, framework exception text, runtime stack traces, and EventSource.
+Native AOT favors smaller native code through .NET's `OptimizationPreference=Size`. Ordinary `--aot` retains culture support, framework exception text, runtime stack traces, and EventSource.
 
 Add `--size-optimized` when the program can give up those facilities:
 
@@ -117,11 +117,10 @@ Provider and FScript error messages remain intact. Reflection analysis and trimm
 
 The FFI teapot executable on macOS ARM64 with .NET SDK 10.0.403 measured:
 
-| Build | Executable bytes | Reduction |
-| --- | ---: | ---: |
-| Before 0.87.1 | 4,378,616 | |
-| Ordinary `--aot` | 2,181,464 | 50.2% |
-| `--aot --size-optimized` | 1,882,776 | 57.0% |
+| Build | Executable bytes |
+| --- | ---: |
+| Ordinary `--aot` | 2,181,464 |
+| `--aot --size-optimized` | 1,882,776 |
 
 Sizes vary with SDK and target platform. These are executable file lengths, excluding optional debug-symbol files. Both profiles passed standalone headless execution and a real three-frame OpenGL check.
 
@@ -137,7 +136,7 @@ The smaller result is about 1.80 MiB, still 408,216 bytes larger than a 1,474,56
 
 `compile` automatically loads `fscript.toml` beside the entry script, even when invoked from another directory. `analyze` uses the same discovery rule. The manifest selects local FFI assemblies and NuGet providers, so neither command needs those providers repeated as assembly flags. Compilation includes their colocated managed dependencies automatically; use `--reference <assembly.dll>` for additional managed assemblies.
 
-Manifest assembly paths resolve from the manifest directory. `--config <path>` selects another manifest relative to the working directory; `--no-config` disables manifest loading. These options are mutually exclusive. Discovery does not search parent directories or fall back to a working-directory manifest. Explicit `--extern-assembly` paths resolve from the working directory and add providers to the selected environment. `--no-default-externs` disables the built-in externs.
+Manifest assembly paths resolve from the manifest directory. `--config <path>` selects another manifest relative to the working directory; `--no-config` disables manifest loading. These options are mutually exclusive. Discovery does not search parent directories or fall back to a working-directory manifest. Explicit `--extern-assembly` paths resolve from the working directory and add providers to the selected environment. `--no-default-externs` disables the [additional CLI modules](../stdlib/overview#availability).
 
 For the teapot example, `samples/ffi/fscript.toml` supplies the provider path:
 

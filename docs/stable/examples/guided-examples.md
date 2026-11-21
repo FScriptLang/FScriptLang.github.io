@@ -4,7 +4,9 @@ title: Guided Examples
 slug: /examples/guided-examples
 ---
 
-This chapter is example-first: each section includes complete code you can copy into a `.fss` file and run directly.
+These examples progress from standalone scripts to an embedded rule. Use the [Samples overview](./overview.md) to choose by goal and prerequisite.
+
+Examples 1–5 use console output. Save each standalone example in a `.fss` file and run it with `fscript --permissions IO <file.fss>`. For multi-file examples, run the entry file from the same configured environment. Example 6 runs in a JavaScript host and has separate instructions.
 
 ## Choose an example
 
@@ -38,7 +40,7 @@ Console.writeLine $"Hello {name} !"
 Run it:
 
 ```bash
-fscript hello.fss -- Ada
+fscript --permissions IO hello.fss -- Ada
 ```
 
 API references used here:

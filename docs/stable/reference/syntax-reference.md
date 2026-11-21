@@ -47,7 +47,16 @@ A block contains local bindings and expressions and takes its value from the fin
 
 The type checker rejects non-exhaustive matches. Use an unguarded wildcard or variable to cover values left over after the other cases. FScript has no script exception handler. Use options or domain unions for recoverable outcomes.
 
-`typeof` is not CLR reflection. In `Json.deserialize (typeof Settings) text`, the token selects the runtime decoder; use a typed receiving function when the result contract matters. `nameof` checks that a binding exists and does not call it.
+See [Type tokens](./native-types-reference.md#type-tokens) for how scripts use values produced by `typeof`.
+
+### Getting a binding name with `nameof`
+
+`nameof binding` returns the binding’s name as a string. The type checker verifies that the binding exists. For a function binding, the result is its name.
+
+```fsharp
+let double n = n * 2
+nameof double // "double"
+```
 
 ## Operators
 

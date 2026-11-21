@@ -4,63 +4,44 @@ title: Introduction
 slug: /
 ---
 
-FScript is a typed, functional scripting language for standalone programs and application scripting. It combines F#/ML-style syntax, static type inference, and immutable data with three ways to run your code: script, embed, and compile.
+FScript is a typed, functional scripting language for automation, standalone programs, and application rules. It combines the concise syntax of the F#/ML family with static type inference: you can write small scripts without type boilerplate, while the language checks how values and functions fit together before execution.
 
-## Script. Embed. Compile.
+## A small language for useful programs
 
-- **Run scripts**: write standalone programs, automate everyday tasks, and explore ideas with the interpreter and REPL. Start with [Quickstart](./learn/quickstart).
-- **Embed FScript**: load scripts in .NET applications, browsers, and Node.js, inspect exported function types, and invoke exports without rebuilding the host application. Your host controls the typed APIs and resources scripts can use. Start with [Embedding](./embedding/overview.md).
-- **Compile programs**: build optimized .NET assemblies, self-contained executables, or native binaries with Native AOT. You can also generate a buildable C# project. Start with [Compilation](./compiler/compilation.md).
+FScript programs are built from expressions, immutable values, and functions. Records describe data, unions model alternatives, and pattern matching makes each case explicit. Lists, maps, and options help you transform collections and handle missing values.
 
-## Iterate, then compile
+```fsharp
+let quote seats =
+  let pricePerSeat = if seats >= 10 then 19 else 29
+  pricePerSeat * seats
 
-Use the interpreter for an edit-and-run workflow:
-
-```sh
-fscript hello.fss
+quote 12
 ```
 
-Compile the script to an optimized .NET assembly when execution speed matters:
+This script evaluates to `228`. The function's type is inferred, indentation groups its body, and the final expression supplies its result. There is no class or entry-point declaration to write.
 
-```sh
-fscript compile hello.fss --target dotnet --output out/hello
-dotnet out/hello/hello.dll
-```
+You can use FScript to automate work, express configurable business rules, or build a standalone tool. Typed APIs let an application extend what scripts can do when the built-in language and library are not enough.
 
-The .NET compiler specializes functions, lowers self tail calls to loops, removes unused code, and fuses eligible pure collection pipelines to avoid intermediate arrays. Generated programs execute without an FScript interpreter. Performance depends on the workload; the [optimization guide](./compiler/compiler-optimizations.md) explains the transformations and their limits, and links to reproducible FScript/F# benchmarks.
+## One language, three ways to use it
 
-You can publish a self-contained executable, use Native AOT to produce a native binary, or generate a buildable C# project. Start with [Compilation](./compiler/compilation.md) for commands and deployment choices. Native AOT requires the .NET SDK and platform build tools, plus AOT-compatible dependencies.
+| Mode | What it gives you |
+| --- | --- |
+| [Interpreter](./interpreter/overview.md) | An immediate edit-and-run loop and a REPL for learning, experiments, and automation. |
+| [Compiler](./compiler/compilation.md) | Optimized .NET execution and standalone deployment, including native AOT. |
+| [Embedded](./embedding/overview.md) | A host API for loading scripts and invoking rules inside a .NET or JavaScript application. |
 
-Compilation is an explicit build step. Running a script with the CLI or embedding it through `ScriptHost` uses the interpreter; JavaScript embedding remains interpreted. Standalone compiled programs use OS permissions rather than the interpreter's sandbox or execution budgets.
+Start with the interpreter. Later, choose compilation when performance or distribution matters, or embedding when your application should own the script's APIs and lifecycle. These are options for different jobs; you do not have to use all three.
 
-## Connect scripts to .NET with FFI
+## Your path through the manual
 
-Expose typed functions and host-provided types through extern bindings. Scripts can pass records and callbacks and use opaque resources while the host chooses which operations to expose.
+| Stage | What you will be able to do |
+| --- | --- |
+| [Quickstart](./learn/quickstart.md) | Install FScript and VS Code, run a script, set a breakpoint, and inspect values. |
+| [Language Tour](./learn/language-tour.md) | Write functions, model data, transform collections, and organize source files. |
+| [Interpreter](./interpreter/overview.md), [Compiler](./compiler/compilation.md), [Embedded](./embedding/overview.md) | Choose an execution mode and configure it for your project. |
+| [Advanced](./advanced/overview.md) | Extend FScript with typed APIs, coordinate concurrent work, and control permissions. |
+| [Samples](./examples/overview.md) | Practice with complete programs and progressively richer integrations. |
 
-Compiled programs support existing .NET FFI providers through generated adapters. Providers can supply typed CLR bindings for direct calls, dependency trimming, and Native AOT when their libraries support it. The [FFI graphics sample](./examples/ffi-graphics.md) uses FScript for scene generation and animation and a .NET provider for OpenGL rendering.
+The Standard Library and Reference sections are lookup material whenever you need an exact function signature, option, or syntax rule.
 
-Read [Embedding](./embedding/overview.md) to register host functions and types, or [Compile to .NET](./compiler/compile-to-dotnet.md) to configure compiled FFI and publishing.
-
-## Write typed scripts
-
-FScript combines expression-oriented code, static type inference, immutable data, and pattern matching. Model data with records and unions, work with lists, maps, and options, and compose curried functions. The interpreter and compiler check language types before execution.
-
-Use it for automation, application rules, embedded scripting, and standalone programs that call .NET libraries. Interpreted embedding lets an application load updated scripts and invoke their exports. Compilation provides an optimized execution path when you are ready to build and distribute a program.
-
-## Suggested learning path
-
-1. Start with [Quickstart](./learn/quickstart) to install FScript and run your first script.
-2. Take the [Language Tour](./learn/language-tour), then follow the Language chapters beginning with [Values and Bindings](./language/values-and-bindings).
-3. Use [Examples](./examples/guided-examples) to practice complete script patterns and [Stdlib](./stdlib/overview) to explore the built-in modules.
-4. Choose [Embedding](./embedding/overview) to integrate scripts into your application, or [Compilation](./compiler/compilation.md) to build a .NET assembly or publish an executable.
-5. Explore [typed host APIs](./embedding/register-externs.md) and [compiled FFI](./compiler/compile-to-dotnet.md#existing-ffi-providers) to connect scripts and programs to your libraries.
-
-## Manual structure
-
-- **Learn**: installation and first working scripts.
-- **Language**: syntax, data modeling, typing, imports/exports, and layout rules.
-- **Examples**: practical scripts and reusable patterns, including .NET FFI.
-- **Compilation**: .NET assemblies, C# projects, executable publishing, and optimization behavior.
-- **Stdlib**: function reference and recipes.
-- **Embedding**: .NET and JavaScript hosts, extern registration, host-provided types, and safety boundaries.
-- **Reference**: CLI options, environment configuration, syntax/operators, native types, and the complete function signature index.
+**Next:** [Quickstart](./learn/quickstart.md). Get one script running before choosing a deployment or integration model.

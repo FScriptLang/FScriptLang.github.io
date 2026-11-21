@@ -4,9 +4,9 @@ title: Standard Library Signature Index
 slug: /reference/stdlib
 ---
 
-This is the complete catalog of core functions/values and default .NET runtime externs. Each name links to argument order, examples, and failure behavior. Type variables are local to each signature; repeated variables in a row must agree.
+This is the standard library catalog for the FScript CLI. Each name links to argument order, examples, and failure behavior. Type variables are local to each signature; repeated variables in a row must agree.
 
-**Core** functions are always available. **Runtime** functions require host registration, are enabled by default in the CLI, and are disabled by `--no-default-externs` or `runtime.default-externs = false`. JavaScript hosts provide their own externs. Registered custom providers add functions beyond this standard catalog. Click a permission tag to read its definition. **None** means that the function requires no capabilities. The **Host permissions** column applies only to hosted interpretation: hosts grant none by default. The CLI and compilation are unrestricted by this policy. Provider FFI requires `Native`; callbacks retain their own requirements. See [Host permissions](../embedding/host-permissions).
+Embedded environments may expose different modules. See [standard library availability](../stdlib/overview#availability). **None** means that the function requires no capabilities. The **Host permissions** column applies to hosted and interpreted CLI execution, both defaulting to none. CLI flags or the selected manifest can grant permissions. Compilation remains unrestricted. Provider FFI requires `Native`. Callbacks retain their own permission requirements. See [Host permissions](../embedding/host-permissions).
 
 ## Top-level surface
 
@@ -103,7 +103,15 @@ This is the complete catalog of core functions/values and default .NET runtime e
 | [`String.toLower`](../stdlib/string) | `string -> string` | <a className="permission-tag permission-tag--none" href="../embedding/host-permissions#none" title="None permission definition">None</a> |
 | [`String.toUpper`](../stdlib/string) | `string -> string` | <a className="permission-tag permission-tag--none" href="../embedding/host-permissions#none" title="None permission definition">None</a> |
 
-## Default .NET runtime
+## I/O, concurrency, and data utilities
+
+### Ref
+
+| Name | Signature | Host permissions |
+| --- | --- | --- |
+| [`Ref.create`](../stdlib/ref) | `'t -> Ref<'t>` | <a className="permission-tag permission-tag--none" href="../embedding/host-permissions#none" title="None permission definition">None</a> |
+| [`Ref.get`](../stdlib/ref) | `Ref<'t> -> 't` | <a className="permission-tag permission-tag--none" href="../embedding/host-permissions#none" title="None permission definition">None</a> |
+| [`Ref.set`](../stdlib/ref) | `'t -> Ref<'t> -> unit` | <a className="permission-tag permission-tag--none" href="../embedding/host-permissions#none" title="None permission definition">None</a> |
 
 ### Console
 
@@ -144,7 +152,7 @@ This is the complete catalog of core functions/values and default .NET runtime e
 
 | Name | Signature | Host permissions |
 | --- | --- | --- |
-| [`Json.deserialize`](../stdlib/json) | `type -> string -> 'a option` | <a className="permission-tag permission-tag--none" href="../embedding/host-permissions#none" title="None permission definition">None</a> |
+| [`Json.deserialize<'a>`](../stdlib/json) | `string -> 'a option` | <a className="permission-tag permission-tag--none" href="../embedding/host-permissions#none" title="None permission definition">None</a> |
 | [`Json.serialize`](../stdlib/json) | `'a -> string option` | <a className="permission-tag permission-tag--none" href="../embedding/host-permissions#none" title="None permission definition">None</a> |
 
 ### Mailbox
@@ -184,13 +192,11 @@ This is the complete catalog of core functions/values and default .NET runtime e
 
 Constructors and syntax are separate from function registration: `Some`/`None`, union cases, literals, ranges, field access, list/map indexers, `typeof`, and `nameof` are covered in [Native Types](./native-types-reference.md) and [Syntax and Operators](./syntax-reference.md). Host-provided type descriptors are covered in [Host-Provided Types](../embedding/host-managed-types).
 
-`Json.deserialize` uses a runtime type token; its generic result scheme does not statically encode the relationship between that token and the result. `Guid.new` accepts an ignored argument; use `Guid.new ()`. `List.contains` compares scalars only; use `List.exists` with `=` for composite data.
+`Json.deserialize<Settings> json` returns `Settings option`. The expected result type can also determine the target. `Guid.new` accepts an ignored argument; use `Guid.new ()`. `List.contains` compares scalars only; use `List.exists` with `=` for composite data.
 
 `Env.setExitCode : int -> unit` selects the eventual shell status without stopping evaluation; see [core builtins](../stdlib/builtins#envsetexitcode). It is effectful and accepts codes `0..255`.
 
 ## Expanded pure support library
-
-Path, Glob, SemVer, scalar, and collection additions are core builtins. Encoding and SHA-256 are pure .NET runtime externs and need host registration. See each module for ordering, errors, and platform rules.
 
 ### Int additions
 
@@ -347,3 +353,25 @@ Path, Glob, SemVer, scalar, and collection additions are core builtins. Encoding
 | --- | --- | --- |
 | [`Hash.sha256`](../stdlib/hash#hashsha256) | `string -> string option` | <a className="permission-tag permission-tag--none" href="../embedding/host-permissions#none" title="None permission definition">None</a> |
 | [`Hash.sha256Bytes`](../stdlib/hash#hashsha256bytes) | `int list -> string option` | <a className="permission-tag permission-tag--none" href="../embedding/host-permissions#none" title="None permission definition">None</a> |
+
+### Process
+
+Runtime supplies Process through default externs, without a package import.
+Execution requires Native; defaults and data types require no grants.
+Script task operations separately require Threading.
+
+| Name | Type | Availability | Host permissions |
+| --- | --- | --- | --- |
+| [`Process.defaults`](../stdlib/process) | `ProcessOptions` | Runtime value | None |
+| [`Process.exec`](../stdlib/process) | `string -> string list -> ProcessOptions -> ProcessResult task` | Runtime function | <a className="permission-tag permission-tag--native" href="../embedding/host-permissions#native">Native</a> |
+| [`ProcessOptions`](../stdlib/process) | Process configuration record | Runtime data type | None |
+| [`ProcessResult`](../stdlib/process) | `Exited of { exitCode: int; stdout: string; stderr: string }` / `Failed of { message: string; stdout: string; stderr: string }` | Runtime union | None |
+
+### FScript
+
+| Name | Type | Availability | Host permissions |
+| --- | --- | --- | --- |
+| [`FScript.defaults`](../stdlib/fscript) | `FScriptOptions` | Runtime value | <a className="permission-tag permission-tag--none" href="../embedding/host-permissions#none">None</a> |
+| [`FScript.exec`](../stdlib/fscript) | `string -> string list -> FScriptOptions -> FScriptResult task` | Runtime function | <a className="permission-tag permission-tag--threading" href="../embedding/host-permissions#threading">Threading</a> |
+| [`FScriptOptions`](../stdlib/fscript) | Root, permission, and timeout options | Runtime record | None |
+| [`FScriptResult`](../stdlib/fscript) | `Completed of { value: string; exitCode: int }` / `Failed of { message: string }` | Runtime union | None |

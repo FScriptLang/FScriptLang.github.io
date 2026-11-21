@@ -6,7 +6,7 @@ slug: /stdlib/xml
 
 **Hosted interpreter permissions:** Every function and value on this page requires no host permissions. Higher-order functions still enforce the requirements of their callbacks. These checks do not apply to CLI execution or compilation. See [Host permissions](../embedding/host-permissions).
 
-`Xml` is provided by the default .NET runtime extern registry. It supports a small path-query language for extracting strings, rather than a full XPath engine or XML object serializer.
+Use the `Xml` path-query syntax to extract element text and attribute values.
 
 ## `Xml.queryValues : string -> string -> string list option`
 

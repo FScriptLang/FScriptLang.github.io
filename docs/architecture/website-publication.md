@@ -7,7 +7,7 @@ website content change, independent of a FScript release.
 
 The initial copies preserve the shipped `0.94.3` manual and all unreleased
 main documentation separately. `docs/stable.json` and `docs/origin.json`
-record their initial provenance. There is no automated documentation import
+record the provenance of Stable and the original Next import. There is no automated documentation import
 after that copy.
 
 The only upstream content fetched during builds is FScript's public
@@ -51,6 +51,5 @@ changes. New content is assembled and validated with the rest of Next.
 
 The home page and mode shortcuts retain Interpreter, Compiler, Embedded order
 and link to Next guides. The Docs entry and version selector retain access to the
-Stable manual; this reorganization does not promote unreleased capabilities to
-Stable. In particular, interpreted CLI permission selection is documented only
-in Next. Neither the language repository nor its release process changes.
+Stable manual. The 0.95.1 promotion brought this navigation and the
+interpreter permission guidance to Stable.

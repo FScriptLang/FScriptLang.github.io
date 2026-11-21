@@ -4,6 +4,8 @@ title: CLI Reference
 slug: /reference/cli
 ---
 
+For task-oriented guidance, start with [Interpreter](../interpreter/overview.md), then [Compiler](../compiler/compilation.md). To execute scripts inside your application through a host API, use [Embedded](../embedding/overview.md).
+
 ## Common commands
 
 ```bash
@@ -65,7 +67,7 @@ dotnet run --project src/FScript -- script.fss
 | `--root <path>`, `-r <path>` | Override filesystem/import root |
 | `--config <path>`, `-c <path>` | Override automatic selection with an explicit environment manifest |
 | `--no-config` | Disable automatic manifest loading |
-| `--no-default-externs` | Omit the 21 default runtime externs; retain the core library |
+| `--no-default-externs` | Disable the [additional CLI modules](../stdlib/overview#availability) |
 | `--extern-assembly <path>` | Add providers from an assembly; repeat to add more |
 | `--` | End CLI parsing; following arguments become `Env.Arguments` |
 
@@ -94,7 +96,7 @@ REPL submissions do not resolve file imports. Use file mode for multi-file scrip
 # Override root
 dotnet run --project src/FScript -- --root /tmp/sandbox script.fss
 
-# Disable default externs
+# Disable additional CLI modules
 dotnet run --project src/FScript -- --no-default-externs script.fss
 
 # Add extern providers from assembly
@@ -192,3 +194,37 @@ compilation; existing execution and compilation commands skip it.
 
 See [Checking FFI Task Sharing](../learn/task-sharing-analysis.md) for the rationale,
 examples, provider thread-safety contracts, hosting APIs, and limitations.
+
+## Interpreter permission selection
+
+Interpreted file execution, stdin, REPL, debugging, and static analysis default
+to no permissions. Select an exact set on the command line:
+
+```sh
+fscript --permissions IO,Threading script.fss
+fscript --permissions All script.fss
+fscript analyze --permissions IO,Threading script.fss
+```
+
+Or declare the permissions in the selected manifest:
+
+```toml
+[runtime]
+permissions = ["IO", "Threading"]
+```
+
+Explicit CLI permissions replace the manifest list; otherwise the manifest list
+applies, falling back to `None`. `--no-config` ignores the manifest. Names are
+case-insensitive: `Interactive`, `Threading`, `IO`, `Native`, `All`, and `None`.
+`All` and `None` must stand alone. TOML `[]` explicitly grants nothing. Unknown
+names, wrong value types, and empty comma-separated CLI entries are errors,
+validated before package restoration or provider initialization.
+
+An automatically discovered manifest is trusted CLI configuration. A manifest
+containing `Native` can authorize arbitrary provider code and child programs;
+review configuration alongside scripts before running an unfamiliar repository.
+Provider loading requires Native even when selected with `--extern-assembly`.
+
+Compilation ignores `runtime.permissions` and remains unrestricted. The
+`--permissions` option applies to interpreted execution and `analyze` only.
+Use `--permissions All` to retain previous CLI execution behavior.

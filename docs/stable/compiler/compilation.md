@@ -1,10 +1,16 @@
 ---
 id: compilation
-title: Compilation
+title: Compiler
 slug: /compiler/overview
 ---
 
 FScript can run inside a host application or compile into a program that runs on its own. Compilation checks the same language types, resolves imported scripts, and produces ordinary .NET code. Generated programs do not load FScript source or start an interpreter.
+
+## Why choose the compiler?
+
+Use the [interpreter](../interpreter/overview.md) while learning and iterating. Choose the compiler when you want optimized execution or a program to distribute without source. Compilation is an explicit build step, not a faster setting for the REPL or `ScriptHost`. Measure your workload; the .NET backend's specialization, tail-call lowering, and eligible pipeline fusion are described in [Compiler Optimizations](./compiler-optimizations.md).
+
+If an application must load changing rules and invoke their exports under its own policy, use [Embedded](../embedding/overview.md). A standalone compiled program has its own entry point and process lifecycle.
 
 ## Choose an output
 
@@ -43,11 +49,19 @@ The program writes `Hello Ada!`, followed by `()`, its final FScript result. Arg
 
 From a checkout, replace `fscript` with `dotnet run --project src/FScript --` in these commands.
 
+## Configuration and permissions
+
+Use `[runtime]` in `fscript.toml` to select .NET providers and `[compile]` to set build defaults. Explicit compiler flags override those defaults; `--config` selects a manifest and `--no-config` skips it. Settings and path precedence are documented in [Environment Configuration](../reference/environment-configuration.md).
+
+Compilation loads executable providers as trusted code and ignores valid `runtime.permissions`. The execution-only `--permissions` option is rejected by `compile`. Neither interpreter permission checks nor filesystem root restrictions are embedded in generated programs: control access with OS accounts, deployment configuration, or process/container isolation as appropriate.
+
+A managed assembly needs a compatible .NET runtime. Self-contained publishing includes the runtime; Native AOT needs the .NET SDK, platform build tools, and AOT-compatible dependencies. These are deployment choices, not replacements for an application host's capability policy.
+
 ## Language and runtime behavior
 
 Records, unions, tuples, lists, options, maps, closures, patterns, and recursive functions retain their FScript semantics. Equality remains structural, collections remain immutable, Boolean operators short-circuit, and top-level effects execute once in source order. An exported binding uses `export let`.
 
-Script imports are resolved at compile time. An application needs its managed dependencies and any files it reads as input, but does not need the original `.fss` files to execute.
+Script imports are resolved at compile time, so imported `.fss` source files do not need to be deployed. Files executed through `FScript.exec` are loaded and interpreted at runtime: deploy those child scripts and their imports within the configured root, alongside the application's managed dependencies and other input files.
 
 Standalone applications use the process working directory and operating-system permissions. Interpreter sandbox restrictions and execution budgets are not carried into compiled binaries.
 
@@ -61,7 +75,7 @@ See [Compile to .NET](./compile-to-dotnet.md) for FFI configuration, typed bindi
 
 Compilation is an explicit CLI or compiler API operation. Running `fscript program.fss` or using ordinary `ScriptHost` embedding continues to use the AST interpreter. JavaScript embedding also remains interpreted.
 
-The separate [IR workflow](./interpret-ir.md) produces a versioned `.fsir` artifact and executes it with the LIR interpreter. It is useful for compiler tooling and conformance work; it is not required to run compiled .NET programs.
+FScript maintainers use the [IR workflow](./interpret-ir.md) to inspect compiler output, reproduce bugs, and test execution with the LIR interpreter.
 
 ## Check FFI task sharing before compiling
 

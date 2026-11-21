@@ -6,8 +6,6 @@ slug: /stdlib/guid
 
 **Hosted interpreter permissions:** `Guid.new` requires `IO` because it obtains randomness from the host. These checks do not apply to CLI execution or compilation. See [Host permissions](../embedding/host-permissions).
 
-`Guid` is provided by the default .NET runtime extern registry.
-
 ## `Guid.new : 'a -> string option`
 
 <a className="permission-tag permission-tag--io" href="../embedding/host-permissions#io" title="IO permission definition">IO</a>

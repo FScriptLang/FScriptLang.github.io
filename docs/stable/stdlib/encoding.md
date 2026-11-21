@@ -6,8 +6,6 @@ slug: /stdlib/encoding
 
 **Hosted interpreter permissions:** Every function and value on this page requires no host permissions. Higher-order functions still enforce the requirements of their callbacks. These checks do not apply to CLI execution or compilation. See [Host permissions](../embedding/host-permissions).
 
-These functions are pure .NET runtime externs. Hosts may register `PureExterns.functions` without exposing IO; the CLI registers them by default. `--no-default-externs` removes them. JavaScript hosts must supply corresponding externs themselves.
-
 Bytes are represented as `int list`; every element must be in `0..255`. Functions return `Some result` on success and `None` for invalid content. Inputs are never read from files, and no system encoding or current culture is consulted.
 
 ### `Encoding.utf8Encode`
@@ -132,7 +130,7 @@ Encoding.uriDecode "a%20%2B%2F%C3%A9"
 
 ## Register only pure content helpers
 
-A .NET embedding host can expose all Encoding functions and the new SHA-256 functions without constructing an IO-capable registry:
+A .NET embedding host can expose all Encoding functions and SHA-256 functions without granting I/O permissions:
 
 ```fsharp
 open FScript.Language
@@ -144,5 +142,3 @@ let result =
     |> TypeInfer.inferProgramWithRegistration registration
     |> Eval.evalProgramWithRegistration registration
 ```
-
-Core scalar math, String, List, Map, Option, Path, Glob, and SemVer helpers need no registration. The scalar math functions live in `Int` and `Float`.

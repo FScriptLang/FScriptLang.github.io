@@ -20,7 +20,7 @@ Create `main.fss` alongside the `shared` directory:
 import "shared/math.fss" as Math
 
 let answer = Math.double 21
-Console.writeLine $"{answer}"
+answer
 ```
 
 Run `fscript main.fss`. The alias is explicit: `Math.double` is available, while `double` is not added to the importing file's top-level scope. Imported types use the same alias, such as `Common.Project`.
@@ -43,7 +43,7 @@ export let answer = 42
 export let quote (seats: int) = seats * 29
 ```
 
-`ScriptHost` and the JavaScript host facade list/read/invoke explicitly exported top-level bindings. Ordinary helpers remain usable inside the script and through script imports. `export let` is case-sensitive and cannot mark a local binding, type declaration, or destructuring binding.
+Embedding applications can access explicitly exported top-level bindings. Ordinary helpers remain usable inside the script and through script imports. `export let` is case-sensitive and cannot mark a local binding, type declaration, or destructuring binding.
 
 `export` is contextual rather than reserved. These are both valid:
 
@@ -54,6 +54,6 @@ export let identity export = export
 
 Only a top-level `export` immediately followed by `let` changes visibility. The exported name can also be `export`, as in `export let export value = value`. `export let rec ... and ...` exports every function in the recursive group. There is no general script attribute syntax.
 
-Use [Real-World Embedding](../embedding/real-world-embedding) for .NET invocation or [JavaScript Hosts](../embedding/fable-javascript) for browser/Node invocation.
+**Checkpoint:** you can organize a typed, multi-file script. This completes the core language chapters.
 
-Next: [Tasks and Concurrency](./tasks-and-concurrency).
+**Next:** [Interpreter](../interpreter/overview.md) for everyday execution, then Compiler and Embedded for other ways to run your code. Runtime concurrency and custom APIs are covered afterward in [Advanced](../advanced/overview.md).

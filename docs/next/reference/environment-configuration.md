@@ -13,9 +13,11 @@ default-externs = true
 extern-assemblies = ["./extensions/Geometry.dll"]
 
 [[runtime.packages]]
-name = "FScript.Numerics.Extensions"
+name = "Contoso.FScript.Extensions"
 version = "0.1.0" # optional; omit to use latest stable
 ```
+
+Replace the example package ID and version with a provider built against Extensibility SDK 3.
 
 All runtime properties are optional:
 

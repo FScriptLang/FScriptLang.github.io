@@ -33,7 +33,7 @@ Arguments and results use the same [CLR mappings as host-provided types](./host-
 
 Pass a registration containing every host descriptor referenced by the handler, including types inside empty containers or `None` results. Unsupported signatures, missing/mismatched descriptors, conflicting CLR projections, null handlers, and invalid names fail at function creation, before script execution. Callbacks, .NET delegates, tasks/async values, arbitrary objects, and unannotated records are unsupported. Returning a function is interpreted as more curried parameters, rather than a separately marshaled function value.
 
-All arguments are decoded and validated before any part of the handler runs, so a bad later argument cannot trigger earlier curried side effects. Results are validated and converted into interpreter values. Opaque arguments recover their typed payload; opaque results snapshot visible fields and retain their payload. Constructible records are rebuilt from script fields. Handler failures identify the script function without exposing reflection exception wrappers. Null values are rejected; use options for absence.
+All arguments are decoded and validated before any part of the handler runs, so a bad later argument cannot trigger earlier curried side effects. Results are validated and converted into SDK values. Opaque arguments recover their typed payload; opaque results snapshot visible fields and retain their payload. Constructible records are rebuilt from script fields. Handler failures identify the script function without exposing reflection exception wrappers. Null values are rejected; use options for absence.
 
 Create the function during environment/provider initialization and reuse it. The helper does not register a function globally, discover CLR methods, or load assemblies.
 
@@ -65,7 +65,7 @@ When an assembly provider accepts `HostContext`, capture that parameter inside i
 | `Name` | `string` | Script-visible name, such as `Host.add`. |
 | `Scheme` | `FunctionScheme` | Authoritative script type, used for inference and boundary validation. |
 | `Arity` | `int` | Number of script arguments required before `Impl` runs. |
-| `Impl` | `ExternalCallContext -> ScriptValue list -> ScriptValue` | Host implementation receiving interpreter values and returning an interpreter value. |
+| `Impl` | `ExternalCallContext -> ScriptValue list -> ScriptValue` | Host implementation receiving SDK arguments and returning a script value. |
 
 For the typed `add` handler above, the helper generates the equivalent of this manual declaration, with argument/result validation and CLR conversion supplied by the adapter:
 
@@ -84,7 +84,7 @@ let addDescriptor : ExternalFunction =
 
 ## Manual external functions
 
-Use the record API directly for callbacks, `ExternalCallContext`, polymorphic schemes, or arity-zero values. `ExternalCallContext` provides `Apply`, `SpawnTask`, `AwaitTask`, and `CheckRuntime` for interacting with the interpreter. Schemes are authoritative whether generated or written manually; manual implementations own their argument decoding and result encoding.
+Use the record API directly for callbacks, async operations, polymorphic schemes, or arity-zero values. SDK 3 `ExternalCallContext` provides `Apply`, `ExposeAsync`, and `CheckRuntime`. Async libraries return an operation as a script task; scripts control spawning, composition, and awaiting. See [Create Async Libraries](./async-libraries) for a complete provider and consumer example. Schemes are authoritative whether generated or written manually; manual implementations own their argument decoding and result encoding.
 
 ## Higher-order externs (callback into script)
 
@@ -181,13 +181,13 @@ Provider registration executes host code and may have side effects. The CLI trus
 
 ## SDK dependency and lifetime
 
-Extension projects reference only `MagnusOpera.FScript.Extensibility` 2.x and open `FScript.Extensibility`. The SDK targets `netstandard2.1` and has no dependency on the interpreter. Its unsigned assembly identity remains `2.0.0.0` throughout compatible 2.x releases; package and file versions follow releases. Extensions built against SDK 1.x must rebuild against SDK 2.x.
+FScript 0.95 uses `MagnusOpera.FScript.Extensibility` 3.x. Extension projects reference only that SDK and open `FScript.Extensibility`. It targets `netstandard2.1` without an interpreter dependency. Its unsigned assembly identity is `3.0.0.0` for compatible 3.x releases. SDK 2 providers and hosts must rebuild; the previous context constructors and spawning/awaiting APIs are removed. See [Migration from SDK 2](./async-libraries#migration-from-sdk-2).
 
 Embedders additionally reference Runtime. Convert an SDK registration using `ExtensionBridge.toLanguageRegistrationWithPermissions HostPermissions.Native` before passing it to native `ScriptHost` APIs. The shorter adapter grants none, so its provider functions remain unavailable until the host grants Native. Those APIs still use `FScript.Language.Value`; SDK values and interpreter values are distinct representations. Perform CLR conversion in SDK handlers, or inspect interpreter values explicitly at the embedding boundary.
 
-`HostContext` is a sealed read-only class exposing `RootDirectory`, `DeniedPathGlobs`, and `DefaultFunctions`. Providers can filter host-supplied defaults without referencing Runtime. Return only provider-owned functions when the loader also enables defaults, to avoid duplicate registrations.
+`HostContext` is a sealed read-only class exposing `RootDirectory`, `DeniedPathGlobs`, and `DefaultFunctions`. Providers can filter host-supplied defaults without referencing Runtime. Automatic catalogs exclude functions requiring `Threading`, including Task, Mailbox, and child-script execution. Return only provider-owned functions when the loader also enables defaults, to avoid duplicate registrations.
 
-Manual callbacks and tasks are opaque SDK handles. Use `ExternalCallContext.Apply`, `SpawnTask`, `AwaitTask`, and `CheckRuntime`; never inspect a closure or task worker. An invocation context expires when its handler returns. Handles may pass between calls in the same active host evaluation, but foreign or expired handles fail. SDK conversion failures use `ExtensionException`, preserving an inner cause where available; callback failures retain their script source location.
+Manual callbacks and tasks are opaque SDK handles. Use `ExternalCallContext.Apply` for synchronous callbacks and `ExposeAsync` for cancellable async I/O; never inspect a closure or task implementation. Scripts await task values. An invocation context expires when its handler returns. Handles may pass between calls in the same active host evaluation, but foreign or expired handles fail. SDK conversion failures use `ExtensionException`, preserving an inner cause where available; callback failures retain their script source location.
 
 ## Distribute through NuGet
 

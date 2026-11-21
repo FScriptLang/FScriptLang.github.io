@@ -86,7 +86,7 @@ let sizeLabel value =
   | _ -> "small"
 ```
 
-Tuple patterns can be used in nonrecursive `let` bindings. Record field destructuring uses `match`, not `let { ... }`. Record patterns can also read the visible fields of an opaque host value without changing the original value or exposing hidden state.
+Tuple patterns can be used in nonrecursive `let` bindings. Record field destructuring uses `match`, not `let { ... }`.
 
 For map extraction, a dynamic key pattern with a guard searches candidate entries for a match; use a literal key pattern when selecting a known key. Matching permits extra entries and `..rest` captures the entries left after extraction.
 

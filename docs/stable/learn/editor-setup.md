@@ -1,74 +1,51 @@
 ---
 id: editor-setup
-title: Editor Setup (VS Code)
+title: Install FScript and VS Code
 slug: /learn/editor-setup
 ---
 
-FScript has an official VS Code extension with Language Server support.
+You will install the command-line interpreter and prepare VS Code to edit and debug `.fss` files. If you already use VS Code, keep your existing installation.
 
-## Install
+## Install FScript
 
-Choose your marketplace:
+Choose one installation route.
 
-- VS Code Marketplace: https://marketplace.visualstudio.com/items?itemName=MagnusOpera.fscript
-- Open VSX: https://open-vsx.org/extension/MagnusOpera/fscript
+### Homebrew on macOS
 
-## What you get
-
-The extension provides:
-
-- syntax highlighting,
-- diagnostics,
-- completion,
-- hover,
-- document symbols,
-- go-to-definition and references,
-- rename,
-- semantic tokens,
-- inlay hints.
-
-## Runtime requirement
-
-The extension uses .NET runtime acquisition via `.NET Install Tool` when needed and can also use `dotnet` from your `PATH`.
-
-## Recommended first workflow
-
-1. Install the extension.
-2. Open a folder containing `.fss` files.
-3. Create `hello.fss` and type a small function.
-4. Confirm diagnostics/completion are active.
-5. Run the script from terminal with `fscript hello.fss`.
-
-## Related docs
-
-- Continue with [Language Tour](./language-tour).
-- Go deeper in [Language chapters](../language/values-and-bindings).
-
-## Numeric signatures
-
-The extension highlights `numeric` annotations and shows inferred arithmetic signatures such as `(x: numeric) -> (y: numeric) -> numeric`. An `int` or `float` annotation specializes a shared arithmetic type. Mixed numeric types and nonnumeric calls are reported as errors.
-
-See [Type System](../language/type-system) for examples and the type hierarchy. The complete [settings and commands reference](../reference/editor-reference.md) lists extension defaults and execution commands.
-
-## Expose host functions and types
-
-For functions supplied by a .NET assembly, add a workspace environment manifest:
-
-```toml
-[runtime]
-extern-assemblies = ["./extensions/AppExterns.dll"]
+```sh
+brew install magnusopera/tap/fscript
 ```
 
-The assembly must contain an [extern provider](../embedding/register-externs#assembly-providers-for-cli-and-editor). Its registered schemes and host-type descriptors drive diagnostics, completion, hover, signature help, and inlay hints. Host-managed values expose only their declared visible fields.
+### .NET tool on supported platforms
 
-Automatic selection uses the `fscript.toml` beside each script, or the nearest parent manifest inside its workspace folder. Different sample directories can use their own environments without manual switching. Use **FScript: Select Configuration** to override this for the whole folder. The picker includes **No configuration** and **Automatic selection**; each workspace folder has an independent persisted choice. A nonempty folder setting `fscript.config` overrides the picker, and the configuration status item shows the effective choice. Explicit selections apply to all files in the folder. Automatic environments use separate processes and never merge manifests.
+Install the [.NET 11 SDK](https://dotnet.microsoft.com/download) first, then install the global tool:
 
-Workspace trust is required to execute provider registration. Restricted Mode keeps default analysis available. Saved manifest changes and provider DLL changes restart only the affected environment server and reanalyze open buffers. Failed initialization reports manifest diagnostics and removes stale configured signatures.
+```sh
+dotnet tool install --global MagnusOpera.FScript
+```
 
-Run the same manifest in a terminal with `fscript --config ./fscript.toml hello.fss`. VS Code REPL commands do not automatically adopt the selection. See [Environment Configuration](../reference/environment-configuration) for precedence, root defaults, multi-root workspaces, and DLL replacement on Windows.
+Check the installation in a new terminal:
 
-## Develop the extension with F5
+```sh
+fscript version
+```
 
-Open the FScript repository and launch **Run VS Code (FScript Extension Dev)**. The prelaunch task bundles the extension, and its development host asynchronously builds the local server once per activation. Wait for server status to become ready, then open `samples/hello.fss`; `Env.Arguments` provides field hover/completion from the built-in `Environment` type.
+You should see the installed version. If the command is not found, reopen the terminal and check that the installation's executable directory is on `PATH`. For the global .NET tool, this is normally `$HOME/.dotnet/tools` on macOS/Linux or `%USERPROFILE%\.dotnet\tools` on Windows.
 
-After changing extension source or settings metadata, stop the debug session and press F5 again. **FScript: Show Language Server Output** opens FScript-specific logs. A custom `fscript.server.path` overrides the development server; clear it when testing the local build.
+## Install VS Code and the FScript extension
+
+1. [Download and install VS Code](https://code.visualstudio.com/docs/getstarted/overview) for your operating system.
+2. Open **Extensions** in VS Code and search for **FScript**. Install the [MagnusOpera FScript extension](https://marketplace.visualstudio.com/items?itemName=MagnusOpera.fscript). It is also available on [Open VSX](https://open-vsx.org/extension/MagnusOpera/fscript).
+3. Allow the extension's .NET runtime acquisition to finish if requested. It can also use `dotnet` from `PATH`. The CLI installed above is needed separately for local execution and debugging.
+4. Create a folder named `fscript-start`, then use **File → Open Folder** to open it. Trust this folder you created so local debugging is enabled.
+5. Use **Terminal → New Terminal** and confirm that `fscript version` works there too.
+
+The extension provides syntax highlighting, inferred-type hovers, completion, diagnostics, and debugging. You do not need a `fscript.toml` file for this quickstart.
+
+## Check the editor
+
+Create and save an empty `pricing.fss` file. Confirm that VS Code's language mode is **FScript**. In the next step you will fill it with a function and use hover and diagnostics to check your work.
+
+If language features do not start, run **FScript: Show Language Server Output** from the Command Palette to inspect the error. The [Editor Reference](../reference/editor-reference.md) lists settings and commands. Configuring external providers belongs to [Advanced: Extension Environments](../advanced/extension-environments.md).
+
+**Next:** [Run Your First Script](./first-script.md).

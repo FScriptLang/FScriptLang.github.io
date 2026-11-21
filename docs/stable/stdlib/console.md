@@ -6,7 +6,7 @@ slug: /stdlib/console
 
 **Hosted interpreter permissions:** `Console.writeLine` requires `IO`. `Console.readLine` requires both `IO` and `Interactive`. These checks do not apply to CLI execution or compilation. See [Host permissions](../embedding/host-permissions).
 
-The `Console` module exposes basic text I/O through host-provided runtime externs.
+Use `Console` to read and write text.
 
 ## `Console.writeLine : string -> unit`
 

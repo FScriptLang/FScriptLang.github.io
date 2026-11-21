@@ -4,7 +4,9 @@ title: Interpret IR
 slug: /compiler/interpret-ir
 ---
 
-Compile a complete FScript program to versioned LIR:
+FScript maintainers use the intermediate representation (IR) to inspect compiler output, reproduce bugs, and test execution. For everyday script development, run the `.fss` file with `fscript` or choose a [compilation target](./compilation.md) when you need a build artifact.
+
+To produce a versioned artifact for the low-level IR (LIR) interpreter, compile a complete FScript program:
 
 ```bash
 fscript compile program.fss --target ir --output ./out

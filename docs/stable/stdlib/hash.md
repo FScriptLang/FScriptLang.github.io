@@ -6,8 +6,6 @@ slug: /stdlib/hash
 
 **Hosted interpreter permissions:** Every function and value on this page requires no host permissions. Higher-order functions still enforce the requirements of their callbacks. These checks do not apply to CLI execution or compilation. See [Host permissions](../embedding/host-permissions).
 
-`Hash` is provided by the default .NET runtime extern registry.
-
 ## `Hash.md5 : string -> string option`
 
 <a className="permission-tag permission-tag--none" href="../embedding/host-permissions#none" title="None permission definition">None</a>

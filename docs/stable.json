@@ -1,8 +1,8 @@
 {
-  "tag": "v0.94.3",
+  "tag": "v0.95.1",
   "copiedFrom": {
-    "repository": "MagnusOpera/FScript",
-    "ref": "0.94.3",
-    "commit": "7ef677535af4bf87d7f387a7285af2cd617de32d"
+    "repository": "FScriptLang/FScriptLang.github.io",
+    "ref": "main",
+    "commit": "b4e9a5cb03c50de8f74b8af92732d1039014d1b7"
   }
 }

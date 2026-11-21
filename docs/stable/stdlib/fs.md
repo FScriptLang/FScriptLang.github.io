@@ -6,7 +6,7 @@ slug: /stdlib/fs
 
 **Hosted interpreter permissions:** Filesystem reads, writes, inspection, and enumeration require `IO`. `Fs.combinePath`, `Fs.parentDirectory`, `Fs.extension`, and `Fs.fileNameWithoutExtension` require none. These checks do not apply to CLI execution or compilation. See [Host permissions](../embedding/host-permissions).
 
-`Fs` provides filesystem operations through the default .NET runtime extern registry. Paths used for I/O resolve against the host's `RootDirectory`, not the script's import alias or the current imported file. The CLI defaults to the entry script's directory; [environment configuration](../reference/environment-configuration) and `--root` can override it.
+Paths used for I/O resolve against the host's `RootDirectory`, not the script's import alias or the current imported file. The CLI defaults to the entry script's directory; [environment configuration](../reference/environment-configuration) and `--root` can override it.
 
 ## Read and inspect
 
@@ -76,4 +76,4 @@ A valid search with no matches returns `Some []`. Invalid, unavailable, or unsaf
 
 Root checks reject paths that escape the root and symlink/reparse-point paths. Hosts can also set root-relative `DeniedPathGlobs`. Denied reads raise an error; `exists` and `kind` hide denied entries. `readText` can propagate I/O errors for an existing unreadable file; its option return is not a general exception handler.
 
-These rules apply to built-in filesystem externs. Custom .NET providers are executable host code and must enforce their own access policy. See [Sandbox and Safety](../embedding/sandbox-and-safety).
+These rules apply to the `Fs` module. Custom .NET providers are executable host code and must enforce their own access policy. See [Sandbox and Safety](../embedding/sandbox-and-safety).

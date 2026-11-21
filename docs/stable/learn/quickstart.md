@@ -4,136 +4,16 @@ title: Quickstart
 slug: /learn/quickstart
 ---
 
-You will build a small pricing rule, run it, and see the language features that make FScript useful inside a host application.
+Start with one small script and one familiar workflow: edit, run, inspect, change. By the end of this section, you will have FScript working in VS Code and will have stepped through a function in the debugger.
 
-:::tip Zero-install route
-Want to touch the language before installing anything? Open the [browser playground](/sandbox), change a number in the first example, and press **Run**.
-:::
+| Step | What you will do | Success looks like |
+| --- | --- | --- |
+| [Install FScript and VS Code](./editor-setup.md) | Install the CLI and editor extension, then open a working folder. | `fscript version` works and VS Code recognizes `.fss` files. |
+| [Run Your First Script](./first-script.md) | Write a pricing calculation, run it, and change its inputs. | The terminal prints `228`; a deliberate type mistake produces a diagnostic. |
+| [Debug in VS Code](./debugging.md) | Set a breakpoint, inspect arguments, and step back to the caller. | You can explain where the result came from. |
 
-## 1. Install the CLI
+You do not need a project file, manifest, external library, or application host for these steps. The sample uses pure calculations, so it needs no permission grants.
 
-Choose one route. The .NET tool works anywhere supported by the .NET SDK; Homebrew is the shortest path on macOS.
+> **Try the language before installing:** the [browser playground](/sandbox) lets you evaluate small examples immediately. Local VS Code debugging uses the installed CLI; it is the final step of this quickstart.
 
-### .NET tool
-
-```bash
-dotnet tool install --global MagnusOpera.FScript
-```
-
-### Homebrew
-
-```bash
-brew install magnusopera/tap/fscript
-```
-
-Check the installation:
-
-```bash
-fscript version
-```
-
-<details>
-<summary>Building from source instead</summary>
-
-```bash
-git clone https://github.com/FScriptLang/FScript.git
-cd FScript
-make build
-```
-
-Run scripts with `dotnet run --project src/FScript -- your-script.fss`.
-
-</details>
-
-## 2. Create a rule
-
-Create `pricing.fss`:
-
-```fsharp
-type Plan =
-  | Starter
-  | Team
-  | Scale
-
-let pricePerSeat plan =
-  match plan with
-  | Starter -> 9
-  | Team -> 19
-  | Scale -> 29
-
-let quote plan seats =
-  pricePerSeat plan * seats
-
-let total = quote Scale 12
-Console.writeLine $"12 Scale seats: ${total}/month"
-```
-
-Run it:
-
-```bash
-fscript pricing.fss
-```
-
-The script writes the following line (the CLI also prints the final expression result, `()`):
-
-```text
-12 Scale seats: $348/month
-```
-
-You have already used four important ideas:
-
-- `type Plan` names the only valid plan choices.
-- `match` handles every choice explicitly.
-- `let quote plan seats` declares a function without type boilerplate.
-- the interpreter infers the types and checks the program before it runs.
-
-Try calling `quote "Scale" 12`: the type checker rejects a string where a `Plan` is expected. Try removing a match case. The type checker reports the missing case before the script runs.
-
-## 3. Make the rule host-callable
-
-An embedded script exposes only the bindings you mark as part of its host contract. Replace the existing `quote` declaration with this version:
-
-```fsharp
-export let quote plan seats =
-  pricePerSeat plan * seats
-```
-
-Your .NET or JavaScript host can now load the script and invoke `quote` by name. Everything else remains an implementation detail of the script.
-
-- Follow the complete [.NET host example](../embedding/real-world-embedding).
-- Use FScript from [JavaScript or a browser host](../embedding/fable-javascript).
-- Learn how [typed externs](../embedding/register-externs) let scripts call capabilities supplied by your application.
-
-## 4. Pick your next move
-
-| If you want to… | Go here |
-| --- | --- |
-| Learn the core syntax quickly | [Language Tour](./language-tour) |
-| Change and run examples | [Browser Playground](/sandbox) |
-| Build something recognizable | [Guided Examples](../examples/guided-examples) |
-| Put FScript inside an application | [Embedding Overview](../embedding/overview) |
-
-## REPL and script arguments
-
-Run `fscript` with no file to start an interactive session:
-
-```bash
-fscript
-```
-
-Pass script arguments after `--`:
-
-```bash
-fscript pricing.fss -- acme scale
-```
-
-The script receives them as the `string list` value `Env.Arguments`.
-
-## Editor setup
-
-The official VS Code extension adds diagnostics, completion, hover, go-to-definition, references, rename, semantic tokens, and inlay hints.
-
-- [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=MagnusOpera.fscript)
-- [Open VSX](https://open-vsx.org/extension/MagnusOpera/fscript)
-
-See [Editor Setup](./editor-setup) for the full walkthrough.
+**Start:** [Install FScript and VS Code](./editor-setup.md). After debugging your first script, continue with the [Language Tour](./language-tour.md).

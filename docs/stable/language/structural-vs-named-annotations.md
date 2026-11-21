@@ -63,6 +63,4 @@ let tagged = {| moved with Label = "office" |}
 
 Both forms create new values. `{ record with ... }` replaces existing fields; `{| record with ... |}` can add fields. Existing field types must remain compatible.
 
-A structural reader may accept an opaque host-managed value with the required visible fields, and returning the argument preserves its complete type and payload. An updating helper requires a constructible record and cannot update an opaque value. See [Host-Provided Types](../embedding/host-managed-types).
-
 Next: [Imports and Exports](./modules-imports-exports.md).

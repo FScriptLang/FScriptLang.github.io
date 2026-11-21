@@ -14,6 +14,12 @@ const changelog = `# Changelog
 
 ## [0.95]
 
+### [v0.95.1]
+
+- Debugger fixes.
+
+**Full Changelog**: https://github.com/FScriptLang/FScript/compare/v0.95.0...v0.95.1
+
 ### [v0.95.0]
 
 - Future release preparation.
@@ -54,7 +60,7 @@ test('Missing or malformed changelog input fails instead of publishing incomplet
   assert.throws(() => whatsNew('<html>oops</html>'), /Missing changelog/);
   assert.throws(() => whatsNew(changelog, '0.94.3'), /canonical/);
   assert.throws(() => whatsNew(changelog, 'v0.94.4'), /Missing release notes/);
-  assert.throws(() => whatsNew(changelog.replace('**Full Changelog**:', 'Compare:'), 'v0.95.0'), /compare link/);
+  assert.throws(() => whatsNew(changelog.replaceAll('**Full Changelog**:', 'Compare:'), 'v0.95.0'), /compare link/);
 });
 
 test('Assembly uses locally owned Stable and Next without overwriting either source', async (t) => {
@@ -116,7 +122,7 @@ test('Runtime refresh selects npm latest without modifying dependency manifests 
   assert.equal(calls, 3);
 });
 
-test('Actual manuals assemble the newcomer progression without promoting Next to Stable', async (t) => {
+test('Actual manuals assemble the newcomer progression for Stable and Next', async (t) => {
   const source = new URL('../', import.meta.url);
   const directory = mkdtempSync(path.join(os.tmpdir(), 'fscript-modes-'));
   t.after(() => rmSync(directory, {recursive: true, force: true}));
@@ -169,5 +175,9 @@ test('Actual manuals assemble the newcomer progression without promoting Next to
   }
   assert.equal(read('versioned_docs/version-stable/intro.md'), read('docs/stable/intro.md'));
   const stable = JSON.parse(read('versioned_sidebars/version-stable-sidebars.json')).docs;
-  assert.ok(!stable.some(({label}) => label === 'Interpreter'));
+  const interpreter = stable.find(({label}) => label === 'Interpreter');
+  assert.ok(interpreter.items.includes('interpreter/configuration-and-permissions'));
+  const stableNotes = read('versioned_docs/version-stable/whats-new.md');
+  assert.match(stableNotes, /^### v0\.95\.1$/m);
+  assert.doesNotMatch(stableNotes, /^## Unreleased$/m);
 });
