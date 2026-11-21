@@ -51,4 +51,6 @@ Use the [VS Code setup](../learn/editor-setup.md) for diagnostics, navigation, a
 
 `fscript analyze program.fss` checks potential FFI task sharing without executing the script. It is a separate, optional analysis; ordinary execution and compilation do not run it. See [Checking FFI Task Sharing](../learn/task-sharing-analysis.md).
 
+Use `fscript test` from the project directory to run tests. See [Testing FScript projects](./testing.md).
+
 Continue with [Configuration and Permissions](./configuration-and-permissions.md) or consult the complete [CLI Reference](../reference/cli-reference.md).

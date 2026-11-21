@@ -18,9 +18,23 @@ fscript script.fss -- arg1 arg2
 # Start REPL
 fscript
 
+# Run project tests
+fscript test
+
 # Print version
 fscript version
 ```
+
+## Test projects
+
+```sh
+fscript test [--filter <substring>] [--profile] [--config <path> | --no-config]
+             [--no-default-externs] [--permissions <names>] [--extern-assembly <path> ...]
+```
+
+Run the command from the project directory. The runner discovers `*_test.fss` files recursively, runs named cases, and reports failures with source locations. `--filter` matches a case-sensitive substring of the full case name. `--profile` shows file setup timings and the ten slowest selected cases. The command returns 0 when all selected cases pass, or 1 on failure or when no cases match.
+
+The default `fscript.toml` is in the working directory. Use `--config` or `-c` to select a different manifest. Permission overrides and repeatable external-assembly flags work as in interpreted execution. See [Testing FScript projects](../interpreter/testing.md) for test registration, named data rows, and assertions.
 
 ## Compile programs
 
@@ -81,6 +95,7 @@ Explicit flag paths and the positional script resolve from the working directory
 | `cat script.fss \| fscript` | Execute redirected source; imports are unsupported |
 | `fscript` with terminal stdin | Start a persistent REPL |
 | `fscript version` | Print the application version |
+| `fscript test` | Discover and run project tests |
 
 File/stdin execution prints the final value after any console output. Failures return nonzero with parse/type/evaluation diagnostics, including source locations when available.
 
@@ -131,7 +146,7 @@ match Env.Arguments with
 
 ## Shared external-function configuration
 
-The CLI loads `fscript.toml` beside the script automatically. Stdin and REPL use the working directory. It does not search parents or nested folders, and imported files retain the entry environment. Use `--config <path>` or `-c <path>` to override selection, or `--no-config` to disable it; combining them is an error:
+The CLI loads `fscript.toml` beside the script automatically. Stdin, REPL, and project tests use the working directory. It does not search parents or nested folders, and imported files retain the entry environment. Use `--config <path>` or `-c <path>` to override selection, or `--no-config` to disable it; combining them is an error:
 
 ```bash
 fscript --config ./fscript.toml scripts/build.fss -- alice
@@ -145,7 +160,7 @@ default-externs = true
 extern-assemblies = ["./extensions/AppExterns.dll"]
 ```
 
-The positional script remains the entry point. Without one, terminal input starts the REPL and redirected stdin runs as a script. Automatic discovery uses only the script directory or stdin/REPL working directory.
+The positional script remains the entry point. Without one, terminal input starts the REPL and redirected stdin runs as a script. Automatic discovery uses only the script directory or stdin/REPL/test working directory.
 
 Manifest paths resolve from its directory. Explicit `--root` overrides the configured root; `--no-default-externs` always disables defaults. Configured assemblies and repeated `--extern-assembly` flags combine in that order with normalized duplicates removed. Invalid manifests or failed provider registration stop execution with a nonzero exit.
 
@@ -197,7 +212,7 @@ examples, provider thread-safety contracts, hosting APIs, and limitations.
 
 ## Interpreter permission selection
 
-Interpreted file execution, stdin, REPL, debugging, and static analysis default
+Interpreted file execution, stdin, REPL, debugging, project tests, and static analysis default
 to no permissions. Select an exact set on the command line:
 
 ```sh
@@ -226,5 +241,5 @@ review configuration alongside scripts before running an unfamiliar repository.
 Provider loading requires Native even when selected with `--extern-assembly`.
 
 Compilation ignores `runtime.permissions` and remains unrestricted. The
-`--permissions` option applies to interpreted execution and `analyze` only.
+`--permissions` option applies to interpreted execution, project tests, and `analyze`.
 Use `--permissions All` to retain previous CLI execution behavior.
