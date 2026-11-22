@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 
+- Document the Http module, JSON requests, and Network permission in the Next manual.
 - Document default-deny interpreter permissions, CLI and TOML selection, and unrestricted compilation in Next.
 - Explain SDK 3 async library authoring and Runtime process permissions throughout the Next manual.
 - Document Ref mutable storage in the Next manual, signature index, and navigation.

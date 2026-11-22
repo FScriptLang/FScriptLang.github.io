@@ -46,7 +46,7 @@ Resolve entry paths and root overrides from the **parent root**, not the entry f
 
 Source paths must end in `.fss`. Traversal, symlink/reparse-point, import-cycle, and denied-path checks remain enforced. Ancestor denied patterns keep their original root-relative meaning for source loading, imports, and every child filesystem operation, including enumeration pruning.
 
-`permissions = None` inherits the **active invocation's** grants; `Some []` grants none. Accepted names are `None`, `Interactive`, `Threading`, `IO`, and `Native`. Unknown names fail. Any requested capability the parent lacks produces `PermissionDenied:`; requests are not silently intersected. The caller needs Threading to launch a child, but the child may receive no Threading and therefore cannot itself start tasks or nested executions.
+`permissions = None` inherits the **active invocation's** grants; `Some []` grants none. Accepted names are `None`, `Interactive`, `Threading`, `IO`, `Native`, and `Network`. Unknown names fail. Any requested capability the parent lacks produces `PermissionDenied:`; requests are not silently intersected. The caller needs Threading to launch a child, but the child may receive no Threading and therefore cannot itself start tasks or nested executions.
 
 Children receive a fresh standard Runtime registration, rebuilt for their root and permissions. They inherit no custom functions, providers, or parent locals/exports. Execution does not discover manifests or restore packages. Interpreter bindings, task scopes, and exit codes are separate. Authorized console operations use the normal shared console and may interleave; no global console redirection is performed.
 

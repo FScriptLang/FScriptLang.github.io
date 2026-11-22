@@ -15,7 +15,7 @@ Choose the policy for the environment that actually runs your code. The language
 
 ## Start with the operations you need
 
-Pure calculations require no permission grants. Console output and built-in filesystem operations need `IO`; terminal input also needs `Interactive`. Task operations need `Threading`. External provider loading, SDK/FFI calls, and child programs need `Native`.
+Pure calculations require no permission grants. Console output and built-in filesystem operations need `IO`; terminal input also needs `Interactive`. Task operations need `Threading`. External provider loading, SDK/FFI calls, and child programs need `Native`. Outbound [HTTP requests](../stdlib/http) need `Network`.
 
 The [Interpreter configuration guide](../interpreter/configuration-and-permissions.md) explains command-line and manifest selection. [Host Permissions](../embedding/host-permissions.md) gives the precise checks and registration APIs for .NET embedders. Compilation rejects the execution-only `--permissions` flag and ignores valid `runtime.permissions`.
 

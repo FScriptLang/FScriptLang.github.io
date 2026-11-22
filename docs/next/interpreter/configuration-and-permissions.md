@@ -42,6 +42,7 @@ default-externs = true
 | `Interactive` | Terminal input; `Console.readLine` also needs `IO`. |
 | `Threading` | `Task.*`, `Mailbox.*`, and `FScript.exec`. |
 | `Native` | External provider loading and SDK/FFI calls, plus child programs through `Process.exec`. |
+| `Network` | Outbound HTTP and HTTPS through [Http](../stdlib/http). Use `Network,Threading` to send and await requests. |
 | `All` | Every permission; use only when you intend to trust all these operations. |
 
 Names are case-insensitive. `All` and `None` must stand alone; TOML `[]` explicitly grants nothing. CLI `--permissions` **replaces** the manifest list. `--no-config` ignores manifest grants. The same selection applies to `analyze`; debugging uses selected manifest grants.

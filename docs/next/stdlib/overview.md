@@ -13,7 +13,7 @@ The CLI makes the standard library available without imports.
 | Group | Modules or names | Availability |
 | --- | --- | --- |
 | Core functions and values | `List`, `Option`, `Map`, `String`, `Int`, `Float`, `Bool`, `Path`, `Glob`, `SemVer`, `ignore` | Always, including JavaScript hosts |
-| Additional CLI modules | `Console`, `Task`, `Mailbox`, `Ref`, `Fs`, `Json`, `Regex`, `Xml`, `Hash`, `Encoding`, `Guid`, `Process` | Enabled by default in the CLI. Availability in embedded scripts depends on the host. |
+| Additional CLI modules | `Console`, `Task`, `Mailbox`, `Ref`, `Fs`, `Json`, `Regex`, `Xml`, `Hash`, `Encoding`, `Guid`, `Process`, `Http` | Enabled by default in the CLI. Availability in embedded scripts depends on the host. |
 | Exit status | `Env.setExitCode : int -> unit` | Effectful core operation; never terminates the host |
 | Execution metadata | `Env : Environment` | Injected by the CLI/REPL or supplied by an embedding host |
 
@@ -32,6 +32,7 @@ Use `--no-default-externs` or set `runtime.default-externs = false` to disable t
 | Parse and format scalar values | [Int, Float, Bool](./scalars) |
 | Read or write console text | [Console](./console) |
 | Run concurrent work and await results | [Task](./task) |
+| Send HTTP requests with headers and a body | [Http](./http) |
 | Launch a program and expose its async result | [Process](./process) |
 | Process messages from concurrent producers | [Mailbox](./mailbox) |
 | Store and replace a value | [Ref](./ref) |

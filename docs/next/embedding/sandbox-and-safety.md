@@ -6,7 +6,7 @@ slug: /embedding/sandbox-and-safety
 
 FScript security is capability-based.
 
-Scripts can only perform actions that your host exposes and permits. See [Host Permissions](./host-permissions) for the default-deny `Interactive`, `Threading`, `IO` and `Native` policy.
+Scripts can only perform actions that your host exposes and permits. See [Host Permissions](./host-permissions) for the default-deny `Interactive`, `Threading`, `IO`, `Native` and `Network` policy.
 
 ## Practical safety model
 

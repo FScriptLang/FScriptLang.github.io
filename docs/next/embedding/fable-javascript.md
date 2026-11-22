@@ -347,7 +347,7 @@ JavaScript treats `Env.setExitCode` as a no-op for source portability. It does n
 
 ## Hosted interpreter permissions
 
-JavaScript hosting grants no capabilities by default. Pass `permissions: ['IO']` (or `Interactive`, `Threading`, `Native`) in run/load/parse/session options to grant them explicitly. `extern` and `HostFunctions.create` accept `requiredPermissions: ['IO']`; omitted requirements declare a host-authored callback as requiring none. Loaded exports and sessions retain grants; returned callables and invocation-context operations check the active policy. For example:
+JavaScript hosting grants no capabilities by default. Pass `permissions: ['IO']` (or `Interactive`, `Threading`, `Native`, `Network`) in run/load/parse/session options to grant them explicitly. `extern` and `HostFunctions.create` accept `requiredPermissions: ['IO']`; omitted requirements declare a host-authored callback as requiring none. Loaded exports and sessions retain grants; returned callables and invocation-context operations check the active policy. For example:
 
 ```javascript
 const write = HostFunctions.create({

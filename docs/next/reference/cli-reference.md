@@ -230,7 +230,7 @@ permissions = ["IO", "Threading"]
 
 Explicit CLI permissions replace the manifest list; otherwise the manifest list
 applies, falling back to `None`. `--no-config` ignores the manifest. Names are
-case-insensitive: `Interactive`, `Threading`, `IO`, `Native`, `All`, and `None`.
+case-insensitive: `Interactive`, `Threading`, `IO`, `Native`, `Network`, `All`, and `None`.
 `All` and `None` must stand alone. TOML `[]` explicitly grants nothing. Unknown
 names, wrong value types, and empty comma-separated CLI entries are errors,
 validated before package restoration or provider initialization.

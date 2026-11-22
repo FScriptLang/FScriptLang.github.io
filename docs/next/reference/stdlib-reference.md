@@ -364,6 +364,14 @@ Script task operations separately require Threading.
 | --- | --- | --- | --- |
 | [`Process.defaults`](../stdlib/process) | `ProcessOptions` | Runtime value | None |
 | [`Process.exec`](../stdlib/process) | `string -> string list -> ProcessOptions -> ProcessResult task` | Runtime function | <a className="permission-tag permission-tag--native" href="../embedding/host-permissions#native">Native</a> |
+| [`Http.defaults`](../stdlib/http) | `HttpRequest` | Runtime value | <a className="permission-tag permission-tag--none" href="../embedding/host-permissions#none">None</a> |
+| [`Http.send`](../stdlib/http) | `string -> string -> HttpRequest -> HttpResult task` | Runtime function | <a className="permission-tag permission-tag--network" href="../embedding/host-permissions#network">Network</a> |
+| [`Http.get`](../stdlib/http) | `string -> HttpRequest -> HttpResult task` | Runtime function | <a className="permission-tag permission-tag--network" href="../embedding/host-permissions#network">Network</a> |
+| [`Http.head`](../stdlib/http) | `string -> HttpRequest -> HttpResult task` | Runtime function | <a className="permission-tag permission-tag--network" href="../embedding/host-permissions#network">Network</a> |
+| [`Http.post`](../stdlib/http) | `string -> HttpRequest -> HttpResult task` | Runtime function | <a className="permission-tag permission-tag--network" href="../embedding/host-permissions#network">Network</a> |
+| [`Http.put`](../stdlib/http) | `string -> HttpRequest -> HttpResult task` | Runtime function | <a className="permission-tag permission-tag--network" href="../embedding/host-permissions#network">Network</a> |
+| [`Http.patch`](../stdlib/http) | `string -> HttpRequest -> HttpResult task` | Runtime function | <a className="permission-tag permission-tag--network" href="../embedding/host-permissions#network">Network</a> |
+| [`Http.delete`](../stdlib/http) | `string -> HttpRequest -> HttpResult task` | Runtime function | <a className="permission-tag permission-tag--network" href="../embedding/host-permissions#network">Network</a> |
 | [`ProcessOptions`](../stdlib/process) | Process configuration record | Runtime data type | None |
 | [`ProcessResult`](../stdlib/process) | `Exited of { exitCode: int; stdout: string; stderr: string }` / `Failed of { message: string; stdout: string; stderr: string }` | Runtime union | None |
 

@@ -13,6 +13,9 @@ Hosted interpreter execution starts with **no permissions**. The host selects a 
 | <span id="interactive" className="permission-definition"><code>Interactive</code></span> | Terminal input; `Console.readLine` additionally requires `IO`. |
 | <span id="threading" className="permission-definition"><code>Threading</code></span> | Every `Task.*` and `Mailbox.*` operation, plus `FScript.exec`. |
 | <span id="native" className="permission-definition"><code>Native</code></span> | External provider loading, calls to SDK/FFI functions, and launching child programs through the built-in `Process.exec` function. This grants trust in code with host OS access. |
+| <span id="network" className="permission-definition"><code>Network</code></span> | Outbound HTTP and HTTPS through [Http](../stdlib/http), including loopback and private destinations reachable by the host. |
+
+`All` sets every permission bit, including future capabilities. Existing explicit `All` grants include `Network`.
 
 `Native` is a trust boundary: arbitrary provider code and child programs can access the host directly, so they are not confined by the interpreter's filesystem, IO, or threading checks. SDK 3 `ExposeAsync` registers library I/O without worker scheduling; the host tracks it and joins pending operations at scope exit. Native code that starts detached work outside that API remains the provider/host's responsibility. Built-in implementation details such as `Math` calling the BCL do not require `Native`.
 
@@ -77,7 +80,7 @@ permissions = ["IO", "Threading"]
 
 Explicit CLI permissions replace the manifest list; otherwise the manifest list
 applies, falling back to `None`. `--no-config` ignores the manifest. Names are
-case-insensitive: `Interactive`, `Threading`, `IO`, `Native`, `All`, and `None`.
+case-insensitive: `Interactive`, `Threading`, `IO`, `Native`, `Network`, `All`, and `None`.
 `All` and `None` must stand alone. TOML `[]` explicitly grants nothing. Unknown
 names, wrong value types, and empty comma-separated CLI entries are errors,
 validated before package restoration or provider initialization.

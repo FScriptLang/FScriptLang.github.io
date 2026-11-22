@@ -35,7 +35,7 @@ Stdin and REPL submissions do not resolve file imports. The [running guide](./ru
 
 ## Make effects explicit
 
-Interpreted execution defaults to **no permissions**, including the REPL and debugger. Pure functions are available immediately. Grant `IO` for console output and built-in filesystem operations, `IO,Interactive` for terminal input, `Threading` for task operations, and `Native` for external providers or child programs.
+Interpreted execution defaults to **no permissions**, including the REPL and debugger. Pure functions are available immediately. Grant `IO` for console output and built-in filesystem operations, `IO,Interactive` for terminal input, `Threading` for task operations, `Native` for external providers or child programs, and `Network` for [HTTP requests](../stdlib/http).
 
 For example, a script that calls `Console.writeLine` needs:
 
