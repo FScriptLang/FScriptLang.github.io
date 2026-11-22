@@ -17,8 +17,8 @@ HTTP provider.
 
 `Http.send` takes a method and a URL. The helpers supply the uppercase method.
 All requests require an absolute HTTP or HTTPS URL without user information.
-Each send requires [`Network`](../embedding/host-permissions#network) in the interpreter.
-`Task.await` also requires [`Threading`](../embedding/host-permissions#threading). The request types and defaults require no grants. Generated .NET
+Each send requires `Network` in the interpreter. `Task.await` also requires
+`Threading`. See [Host Permissions](../embedding/host-permissions). The request types and defaults require no grants. Generated .NET
 programs use the host's OS permissions.
 
 Use a record update on `Http.defaults` to set request fields.
