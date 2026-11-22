@@ -14,6 +14,12 @@ const changelog = `# Changelog
 
 ## [0.95]
 
+### [v0.95.5]
+
+- Download released language servers and offer editor updates.
+
+**Full Changelog**: https://github.com/FScriptLang/FScript/compare/v0.95.3...v0.95.5
+
 ### [v0.95.3]
 
 - Run project tests and use Test Explorer.
@@ -194,6 +200,13 @@ test('Actual manuals assemble the newcomer progression for Stable and Next', asy
   assert.match(testing, /fscript test/);
   assert.match(testing, /Run with Profiling/);
   const stableNotes = read('versioned_docs/version-stable/whats-new.md');
+  assert.match(stableNotes, /^### v0\.95\.5$/m);
   assert.match(stableNotes, /^### v0\.95\.3$/m);
   assert.doesNotMatch(stableNotes, /^## Unreleased$/m);
+  for (const edition of ['.generated/next', 'versioned_docs/version-stable']) {
+    const editor = read(`${edition}/reference/editor-reference.md`);
+    assert.match(editor, /fscript\.server\.version/);
+    assert.match(editor, /fscript\.checkLanguageServerUpdates/);
+    assert.match(editor, /Updating the language server never installs or changes the CLI/);
+  }
 });

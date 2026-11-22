@@ -36,7 +36,7 @@ You should see the installed version. If the command is not found, reopen the te
 
 1. [Download and install VS Code](https://code.visualstudio.com/docs/getstarted/overview) for your operating system.
 2. Open **Extensions** in VS Code and search for **FScript**. Install the [MagnusOpera FScript extension](https://marketplace.visualstudio.com/items?itemName=MagnusOpera.fscript). It is also available on [Open VSX](https://open-vsx.org/extension/MagnusOpera/fscript).
-3. Allow the extension's .NET runtime acquisition to finish if requested. It can also use `dotnet` from `PATH`. The CLI installed above is needed separately for local execution and debugging.
+3. Allow the extension to download a supported language server from FScript GitHub Releases and acquire its .NET runtime on first use. Cached servers work offline; the runtime can also use `dotnet` from `PATH`. The CLI installed above is needed separately for local execution and debugging.
 4. Create a folder named `fscript-start`, then use **File → Open Folder** to open it. Trust this folder you created so local debugging is enabled.
 5. Use **Terminal → New Terminal** and confirm that `fscript version` works there too.
 
