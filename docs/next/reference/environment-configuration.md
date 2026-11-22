@@ -25,10 +25,18 @@ All runtime properties are optional:
 | --- | --- | --- |
 | `runtime.root` | String | Existing execution/editor default, described below |
 | `runtime.default-externs` | Boolean | `true` |
+| `runtime.no-result` | Boolean | `false` |
 | `runtime.extern-assemblies` | Array of strings | Empty |
 | `runtime.packages` | Array of package tables | Empty |
 
 Unknown sections/properties, incorrect value types, and malformed TOML are errors. Each package table requires `name` and optionally accepts an exact string `version`. Unknown properties, invalid IDs/versions, and repeated names are errors. There is no script entry point or import declaration in this file. Compile defaults use the separate table below.
+
+## Interpreter result display
+
+Set `no-result = true` under `[runtime]` to hide the final value in file,
+stdin, and REPL execution. Explicit console output and the exit status are
+independent of this setting. The `--no-result` flag enables suppression even
+when the manifest sets it to `false`.
 
 ## Compile defaults
 
@@ -52,10 +60,13 @@ Then run `fscript compile main.fss`. The entry script is still a positional argu
 | `compile.aot` | Boolean | `false` |
 | `compile.size-optimized` | Boolean | `false` |
 | `compile.single-file` | Boolean | `false` |
+| `compile.no-result` | Boolean | `false` |
 | `compile.runtime` | Nonempty string | Build host RID for executable publishing |
 | `compile.output` | Nonempty path string | Conventional directory below the entry script |
 
 Explicit CLI options override manifest values. `--target` overrides `backend`; `--output` and `--runtime` override their corresponding properties. `--aot` / `--no-aot`, `--size-optimized` / `--no-size-optimized`, and `--single-file` / `--no-single-file` override booleans in either direction. Supplying both positive and negative forms of one flag is an error. Explicit options missing their value are errors, even if the manifest defines a fallback.
+
+For C# and .NET compilation, `compile.no-result = true` works like `--no-result`. IR compilation ignores the manifest setting and rejects the explicit flag.
 
 Selecting C# or IR ignores inherited .NET publishing defaults. Explicit .NET publishing flags on those backends remain errors. `--single-file` replaces inherited AOT and size optimization; `--aot` replaces inherited single-file mode. `--no-aot` also clears inherited size optimization. An explicit `--size-optimized` still requires effective AOT. If both publishing modes are enabled together, AOT takes precedence, matching the existing CLI behavior. Inherited runtime identifiers apply only to executable publishing; explicit `--runtime` without a publishing mode remains an error.
 

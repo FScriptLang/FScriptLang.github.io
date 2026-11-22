@@ -183,6 +183,8 @@ fscript compile program.fss --target dotnet --no-result --output out/program
 fscript compile program.fss --target csharp --no-result --output out/source
 ```
 
+To set this in `fscript.toml`, use [`runtime.no-result`](./environment-configuration#interpreter-result-display) for interpreted scripts or [`compile.no-result`](./environment-configuration#compile-defaults) for C# and .NET builds.
+
 The compilation flag is baked into the generated entry point; it is not consumed from a compiled application's arguments. Explicit `Console.writeLine` output and diagnostics remain visible. The REPL also accepts `--no-result`. IR artifacts retain their program values and do not accept this compilation flag.
 
 The final value never becomes a process exit status. Successful execution returns `0` unless `Env.setExitCode` selects another status. An unhandled failure still returns a nonzero status, even if the program selected `0` beforehand. Suppressing a result does not suppress failures or stop evaluation. Compilers may remove discarded work only when it is proven pure and total.

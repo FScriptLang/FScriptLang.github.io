@@ -48,6 +48,24 @@ positive 32-bit integers. The timeout covers connecting, sending, and reading
 the response. The response-size limit applies during streaming, with no
 partial body returned on failure. Host cancellation cancels the task.
 
+## Print the daily fortune
+
+The [daily fortune sample](https://github.com/FScriptLang/FScript/tree/main/samples/http)
+uses `Http.get` to fetch a plain-text fortune from Dumb APIs. It checks the
+status, decodes the body as UTF-8, and prints the fortune. The accompanying
+`fscript.toml` grants the permissions used by the sample and hides the
+automatic final value.
+
+```toml
+[runtime]
+no-result = true
+permissions = ["IO", "Network", "Threading"]
+```
+
+Run `fscript samples/http/main.fss` from the FScript repository root with internet access.
+
+## Send JSON
+
 Use [Json](./json) to serialize a request and deserialize its response. Run your script
 with `fscript --permissions Network,Threading script.fss`.
 
